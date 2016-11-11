@@ -25,6 +25,10 @@ const mapDispatchToProps = dispatch => ({
         if (error) console.error(error);
         else dispatch(getMyShows(result));
       });
+      Meteor.call('shows.getTop', 20, (error, result) => {
+        if (error) console.error(error);
+        else console.log(result);
+      });
     }
   },
 });

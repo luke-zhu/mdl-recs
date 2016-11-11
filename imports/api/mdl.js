@@ -1,8 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { HTTP } from 'meteor/http';
+import { check } from 'meteor/check';
 
 Meteor.methods({
-  'mdl.getList': username => {
+  'mdl.getList': (username) => {
+    check(username, String);
     const content = HTTP
       .get(`http://mydramalist.com/dramalist/${username}`)
       .content;
