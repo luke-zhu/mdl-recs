@@ -1,18 +1,25 @@
-import React, { Component } from 'react';
+import React, { PropTypes, Component } from 'react';
 import Chart from 'chart.js';
+import { Meteor } from 'meteor/meteor';
+import { connect } from 'react-redux';
+
+import { getTopShows } from '../redux/actions';
 
 class MDLTopShows extends Component {
   componentDidMount() {
+    this.props.updateShows();
+  }
+  componentDidUpdate() {
     this.renderChart();
   }
   renderChart() {
     this.chart_instance = new Chart(this.node, {
       type: 'bar',
       data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: this.props.shows.map(show => show.name),
         datasets: [{
-          label: '# of Votes',
-          data: [12, 19, 3, 5, 2, 3],
+          label: '# of Scores',
+          data: this.props.shows.map(show => show['count']),
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',
@@ -44,8 +51,9 @@ class MDLTopShows extends Component {
     });
   }
   render() {
+    console.log(this.props.shows);
     return (
-      <div style={{ maxWidth: '400px', maxHeight: '400px' }}>
+      <div style={{ maxWidth: '800px', maxHeight: '500px' }}>
         <canvas
           ref={node => this.node = node}
           height="400"
@@ -56,4 +64,25 @@ class MDLTopShows extends Component {
   }
 }
 
-export default MDLTopShows;
+MDLTopShows.propTypes = {
+  updateShows: PropTypes.func.isRequired,
+  shows: PropTypes.array.isRequired,
+};
+
+const mapStateToProps = state => ({
+  shows: state.topShows,
+});
+
+const mapDispatchToProps = dispatch => ({
+  updateShows: () => {
+    Meteor.call('shows.getTop', 10, (error, result) => {
+      if (error) console.error(error);
+      else dispatch(getTopShows(result));
+    });
+  },
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(MDLTopShows);

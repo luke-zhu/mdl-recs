@@ -6,7 +6,12 @@ import MDLCard from './MDLCard.jsx';
 const MDLShowsList = ({ shows }) => {
   const rows = [];
   shows.forEach(show => rows.push(<MDLCard show={show} />));
-  return <div>{rows.length === 0 ? null : <h1>Your Listed Shows</h1>}{rows}</div>;
+  return (
+    <div>
+      {rows.length === 0 ? null : <h1>Your Listed Shows</h1>}
+      {rows}
+    </div>
+  );
 };
 
 MDLShowsList.propTypes = {

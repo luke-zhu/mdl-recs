@@ -1,5 +1,6 @@
 const initialState = {
   myShows: [],
+  topShows: [],
 };
 
 const reducers = (state = initialState, action) => {
@@ -7,6 +8,10 @@ const reducers = (state = initialState, action) => {
     case 'GET_MY_SHOWS':
       return Object.assign({}, state, {
         myShows: action.shows,
+      });
+    case 'GET_TOP_SHOWS':
+      return Object.assign({}, state, {
+        topShows: action.shows,
       });
     default:
       return state;

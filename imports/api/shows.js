@@ -8,8 +8,8 @@ Meteor.methods({
   'shows.getTop': (numShows) => {
     check(numShows, Number);
     return (
-      Shows.find({}, {
-        sort: { rating: -1 },
+      Shows.find({ 'avg(rating)': { $gt: 8.5 } }, {
+        sort: { count: -1 },
         limit: numShows,
       }).fetch()
     );
