@@ -1,29 +1,35 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import MDLCard from './MDLCard.jsx';
+import RecommendedShows from './RecommendedShows.jsx';
+import LoadingView from './LoadingView.jsx';
 
-const MDLShowsList = ({ shows }) => {
-  const rows = [];
-  shows.forEach(show => rows.push(<MDLCard show={show} />));
+const MDLShowsList = ({ loading, myShows, similarShows }) => {
+  if (!loading) {
+    return null;
+  } else if (myShows.length === 0) {
+    return <LoadingView caption={'Loading your shows'} />;
+  } else if (similarShows.length === 0) {
+    return <LoadingView caption={'Finding similar shows'} />;
+  }
   return (
-    <div>
-      {rows.length === 0 ? null : <h1>Your Listed Shows</h1>}
-      {rows}
-    </div>
+    <RecommendedShows
+      myShows={myShows}
+      similarShows={similarShows}
+    />
   );
 };
 
 MDLShowsList.propTypes = {
-  shows: PropTypes.arrayOf(
-    PropTypes.objectOf(
-        PropTypes.string.isRequired
-      ).isRequired
-    ).isRequired,
+  loading: PropTypes.bool.isRequired,
+  myShows: PropTypes.array.isRequired,
+  similarShows: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = state => ({
-  shows: state.myShows,
+  loading: state.loading,
+  myShows: state.myShows,
+  similarShows: state.similarShows,
 });
 
 export default connect(mapStateToProps)(MDLShowsList);

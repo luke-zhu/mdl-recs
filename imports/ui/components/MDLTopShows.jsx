@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import Chart from 'chart.js';
 import { Meteor } from 'meteor/meteor';
 import { connect } from 'react-redux';
+import Paper from 'material-ui/Paper';
 
 import { getTopShows } from '../redux/actions';
 
@@ -16,31 +17,25 @@ class MDLTopShows extends Component {
     this.chart_instance = new Chart(this.node, {
       type: 'bar',
       data: {
-        labels: this.props.shows.map(show => show.name),
+        labels: this.props.shows.map(show => show.title),
         datasets: [{
-          label: '# of Scores',
-          data: this.props.shows.map(show => show['count']),
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-          ],
-          borderColor: [
-            'rgba(255,99,132,1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)',
-          ],
+          label: '# of Ratings',
+          data: this.props.shows.map(show => show.num_scores),
+          backgroundColor: 'rgba(132, 255, 99, 0.2)',
+          borderColor: 'rgba(132, 255, 99, 1)',
           borderWidth: 1,
         }],
       },
       options: {
+        title: {
+          display: true,
+          position: 'bottom',
+          text: 'Most watched shows rated at least 8.5 by recent forum users',
+        },
         scales: {
+          xAxes: [{
+            display: false,
+          }],
           yAxes: [{
             ticks: {
               beginAtZero: true,
@@ -51,15 +46,13 @@ class MDLTopShows extends Component {
     });
   }
   render() {
-    console.log(this.props.shows);
     return (
-      <div style={{ maxWidth: '800px', maxHeight: '500px' }}>
+      <Paper style={{ padding: 10, marginBottom: 20 }} zDepth={2}>
+        <h2>Statistics</h2>
         <canvas
           ref={node => this.node = node}
-          height="400"
-          width="400"
         />
-      </div>
+      </Paper>
     );
   }
 }
@@ -75,9 +68,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   updateShows: () => {
-    Meteor.call('shows.getTop', 10, (error, result) => {
+    Meteor.call('shows.getTop', 20, (error, result) => {
       if (error) console.error(error);
-      else dispatch(getTopShows(result));
+      else {
+        dispatch(getTopShows(result));
+      }
     });
   },
 });

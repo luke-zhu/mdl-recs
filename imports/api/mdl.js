@@ -24,7 +24,9 @@ Meteor.methods({
         }
         titles.push({
           name: t,
-          myScore: content.substring(i + j + 6, i + j + 8) / 10,
+          myScore: content[i + j + 8] === '"' ? (
+              content.substring(i + j + 6, i + j + 8) / 10
+            ) : 10,
         });
       }
     }
