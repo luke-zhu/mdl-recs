@@ -1,0 +1,767 @@
+[
+  {
+    "show1": "Goblin",
+    "show2": "Healer",
+    "similarity": 0.9965632665
+  },
+  {
+    "show1": "Healer",
+    "show2": "Pinocchio",
+    "similarity": 0.9962389264
+  },
+  {
+    "show1": "Healer",
+    "show2": "My Girl",
+    "similarity": 0.9908765196
+  },
+  {
+    "show1": "My Girlfriend is a Gumiho",
+    "show2": "Secret",
+    "similarity": 0.9558343111
+  },
+  {
+    "show1": "City Hunter",
+    "show2": "Weightlifting Fairy Kim Bok Joo",
+    "similarity": 0.9547755432
+  },
+  {
+    "show1": "Boys Over Flowers",
+    "show2": "Pinocchio",
+    "similarity": 0.9547254402
+  },
+  {
+    "show1": "Pinocchio",
+    "show2": "Secret Garden",
+    "similarity": 0.9545759381
+  },
+  {
+    "show1": "Fated to Love You",
+    "show2": "Secret",
+    "similarity": 0.9540963741
+  },
+  {
+    "show1": "My Girl",
+    "show2": "My Girlfriend is a Gumiho",
+    "similarity": 0.9522790809
+  },
+  {
+    "show1": "Coffee Prince",
+    "show2": "My Girlfriend is a Gumiho",
+    "similarity": 0.951588915
+  },
+  {
+    "show1": "It's Okay, That's Love",
+    "show2": "My Girl",
+    "similarity": 0.9499032653
+  },
+  {
+    "show1": "Boys Over Flowers",
+    "show2": "Fated to Love You",
+    "similarity": 0.9497935584
+  },
+  {
+    "show1": "It's Okay, That's Love",
+    "show2": "Secret",
+    "similarity": 0.9496353724
+  },
+  {
+    "show1": "My Girl",
+    "show2": "Pinocchio",
+    "similarity": 0.9908534632
+  },
+  {
+    "show1": "City Hunter",
+    "show2": "My Girlfriend is a Gumiho",
+    "similarity": 0.9480012223
+  },
+  {
+    "show1": "Healer",
+    "show2": "Love in the Moonlight",
+    "similarity": 0.9478793575
+  },
+  {
+    "show1": "Boys Over Flowers",
+    "show2": "You Who Came from the Stars",
+    "similarity": 0.9477861987
+  },
+  {
+    "show1": "Boys Over Flowers",
+    "show2": "Love in the Moonlight",
+    "similarity": 0.9474606773
+  },
+  {
+    "show1": "Boys Over Flowers",
+    "show2": "Secret Garden",
+    "similarity": 0.9465538327
+  },
+  {
+    "show1": "My Girl",
+    "show2": "Secret Garden",
+    "similarity": 0.946425937
+  },
+  {
+    "show1": "Secret",
+    "show2": "Secret Garden",
+    "similarity": 0.9461476646
+  },
+  {
+    "show1": "Boys Over Flowers",
+    "show2": "Full House ",
+    "similarity": 0.946063928
+  },
+  {
+    "show1": "Full House ",
+    "show2": "Healer",
+    "similarity": 0.9448771378
+  },
+  {
+    "show1": "My Girlfriend is a Gumiho",
+    "show2": "Secret Garden",
+    "similarity": 0.9438837937
+  },
+  {
+    "show1": "City Hunter",
+    "show2": "Goblin",
+    "similarity": 0.9905788599
+  },
+  {
+    "show1": "Fated to Love You",
+    "show2": "My Girlfriend is a Gumiho",
+    "similarity": 0.9433911567
+  },
+  {
+    "show1": "Secret",
+    "show2": "Weightlifting Fairy Kim Bok Joo",
+    "similarity": 0.9421191464
+  },
+  {
+    "show1": "Coffee Prince",
+    "show2": "Fated to Love You",
+    "similarity": 0.9412854368
+  },
+  {
+    "show1": "Full House ",
+    "show2": "Weightlifting Fairy Kim Bok Joo",
+    "similarity": 0.9400730606
+  },
+  {
+    "show1": "Fated to Love You",
+    "show2": "Weightlifting Fairy Kim Bok Joo",
+    "similarity": 0.9390175549
+  },
+  {
+    "show1": "Boys Over Flowers",
+    "show2": "My Girl",
+    "similarity": 0.9389877065
+  },
+  {
+    "show1": "Fated to Love You",
+    "show2": "It's Okay, That's Love",
+    "similarity": 0.9386609617
+  },
+  {
+    "show1": "City Hunter",
+    "show2": "Love in the Moonlight",
+    "similarity": 0.9367475117
+  },
+  {
+    "show1": "Coffee Prince",
+    "show2": "Love in the Moonlight",
+    "similarity": 0.9366325258
+  },
+  {
+    "show1": "Boys Over Flowers",
+    "show2": "Weightlifting Fairy Kim Bok Joo",
+    "similarity": 0.9365880438
+  },
+  {
+    "show1": "Kill Me, Heal Me",
+    "show2": "Pinocchio",
+    "similarity": 0.9904100881
+  },
+  {
+    "show1": "Full House ",
+    "show2": "You Who Came from the Stars",
+    "similarity": 0.9363901052
+  },
+  {
+    "show1": "Fated to Love You",
+    "show2": "Queen In Hyun's Man",
+    "similarity": 0.9354790954
+  },
+  {
+    "show1": "Full House ",
+    "show2": "Goblin",
+    "similarity": 0.934463063
+  },
+  {
+    "show1": "Love in the Moonlight",
+    "show2": "My Girl",
+    "similarity": 0.9315804697
+  },
+  {
+    "show1": "Full House ",
+    "show2": "It's Okay, That's Love",
+    "similarity": 0.9305824362
+  },
+  {
+    "show1": "Coffee Prince",
+    "show2": "Full House ",
+    "similarity": 0.9301200692
+  },
+  {
+    "show1": "Coffee Prince",
+    "show2": "Weightlifting Fairy Kim Bok Joo",
+    "similarity": 0.9300306852
+  },
+  {
+    "show1": "City Hunter",
+    "show2": "Fated to Love You",
+    "similarity": 0.9285217196
+  },
+  {
+    "show1": "Coffee Prince",
+    "show2": "It's Okay, That's Love",
+    "similarity": 0.9280219877
+  },
+  {
+    "show1": "Love in the Moonlight",
+    "show2": "Secret Garden",
+    "similarity": 0.9277791046
+  },
+  {
+    "show1": "Healer",
+    "show2": "Kill Me, Heal Me",
+    "similarity": 0.9902469739
+  },
+  {
+    "show1": "Full House ",
+    "show2": "Kill Me, Heal Me",
+    "similarity": 0.9264406108
+  },
+  {
+    "show1": "Love in the Moonlight",
+    "show2": "Secret",
+    "similarity": 0.9263269173
+  },
+  {
+    "show1": "It's Okay, That's Love",
+    "show2": "Secret Garden",
+    "similarity": 0.924475557
+  },
+  {
+    "show1": "Full House ",
+    "show2": "My Girl",
+    "similarity": 0.9240237573
+  },
+  {
+    "show1": "Full House ",
+    "show2": "Pinocchio",
+    "similarity": 0.9213569181
+  },
+  {
+    "show1": "Full House ",
+    "show2": "Queen In Hyun's Man",
+    "similarity": 0.9167214979
+  },
+  {
+    "show1": "Full House ",
+    "show2": "Secret",
+    "similarity": 0.9162992316
+  },
+  {
+    "show1": "Full House ",
+    "show2": "Love in the Moonlight",
+    "similarity": 0.9153399717
+  },
+  {
+    "show1": "It's Okay, That's Love",
+    "show2": "Love in the Moonlight",
+    "similarity": 0.9124036309
+  },
+  {
+    "show1": "Fated to Love You",
+    "show2": "Secret Garden",
+    "similarity": 0.912399256
+  },
+  {
+    "show1": "Pinocchio",
+    "show2": "Queen In Hyun's Man",
+    "similarity": 0.9901615865
+  },
+  {
+    "show1": "Full House ",
+    "show2": "Secret Garden",
+    "similarity": 0.9080004283
+  },
+  {
+    "show1": "Fated to Love You",
+    "show2": "Full House ",
+    "similarity": 0.9068482264
+  },
+  {
+    "show1": "City Hunter",
+    "show2": "Full House ",
+    "similarity": 0.8864801154
+  },
+  {
+    "show1": "Healer",
+    "show2": "Queen In Hyun's Man",
+    "similarity": 0.9895447592
+  },
+  {
+    "show1": "Goblin",
+    "show2": "Queen In Hyun's Man",
+    "similarity": 0.9891719305
+  },
+  {
+    "show1": "Weightlifting Fairy Kim Bok Joo",
+    "show2": "You Who Came from the Stars",
+    "similarity": 0.9889999568
+  },
+  {
+    "show1": "City Hunter",
+    "show2": "Kill Me, Heal Me",
+    "similarity": 0.9889147003
+  },
+  {
+    "show1": "Goblin",
+    "show2": "Pinocchio",
+    "similarity": 0.9943973635
+  },
+  {
+    "show1": "Goblin",
+    "show2": "Love in the Moonlight",
+    "similarity": 0.9876303073
+  },
+  {
+    "show1": "Kill Me, Heal Me",
+    "show2": "My Girl",
+    "similarity": 0.9870580474
+  },
+  {
+    "show1": "Pinocchio",
+    "show2": "You Who Came from the Stars",
+    "similarity": 0.9862555829
+  },
+  {
+    "show1": "It's Okay, That's Love",
+    "show2": "My Girlfriend is a Gumiho",
+    "similarity": 0.9857692967
+  },
+  {
+    "show1": "Kill Me, Heal Me",
+    "show2": "You Who Came from the Stars",
+    "similarity": 0.9855294941
+  },
+  {
+    "show1": "Love in the Moonlight",
+    "show2": "Pinocchio",
+    "similarity": 0.9854782261
+  },
+  {
+    "show1": "Goblin",
+    "show2": "My Girl",
+    "similarity": 0.9848823047
+  },
+  {
+    "show1": "Fated to Love You",
+    "show2": "Love in the Moonlight",
+    "similarity": 0.9846626502
+  },
+  {
+    "show1": "My Girl",
+    "show2": "You Who Came from the Stars",
+    "similarity": 0.9835253445
+  },
+  {
+    "show1": "Healer",
+    "show2": "Secret",
+    "similarity": 0.9827713307
+  },
+  {
+    "show1": "Healer",
+    "show2": "You Who Came from the Stars",
+    "similarity": 0.9942882225
+  },
+  {
+    "show1": "Secret Garden",
+    "show2": "You Who Came from the Stars",
+    "similarity": 0.9827416976
+  },
+  {
+    "show1": "Boys Over Flowers",
+    "show2": "Queen In Hyun's Man",
+    "similarity": 0.9827048525
+  },
+  {
+    "show1": "Queen In Hyun's Man",
+    "show2": "Weightlifting Fairy Kim Bok Joo",
+    "similarity": 0.9825039605
+  },
+  {
+    "show1": "Queen In Hyun's Man",
+    "show2": "You Who Came from the Stars",
+    "similarity": 0.9819789814
+  },
+  {
+    "show1": "Pinocchio",
+    "show2": "Secret",
+    "similarity": 0.9817910616
+  },
+  {
+    "show1": "Kill Me, Heal Me",
+    "show2": "Secret",
+    "similarity": 0.9811310159
+  },
+  {
+    "show1": "Love in the Moonlight",
+    "show2": "You Who Came from the Stars",
+    "similarity": 0.9810787157
+  },
+  {
+    "show1": "Goblin",
+    "show2": "My Girlfriend is a Gumiho",
+    "similarity": 0.9809662799
+  },
+  {
+    "show1": "Healer",
+    "show2": "Weightlifting Fairy Kim Bok Joo",
+    "similarity": 0.9807686902
+  },
+  {
+    "show1": "Boys Over Flowers",
+    "show2": "City Hunter",
+    "similarity": 0.9804350087
+  },
+  {
+    "show1": "Boys Over Flowers",
+    "show2": "Goblin",
+    "similarity": 0.9932588468
+  },
+  {
+    "show1": "Secret Garden",
+    "show2": "Weightlifting Fairy Kim Bok Joo",
+    "similarity": 0.9799954733
+  },
+  {
+    "show1": "Fated to Love You",
+    "show2": "My Girl",
+    "similarity": 0.9797709109
+  },
+  {
+    "show1": "Goblin",
+    "show2": "Weightlifting Fairy Kim Bok Joo",
+    "similarity": 0.9789113609
+  },
+  {
+    "show1": "Fated to Love You",
+    "show2": "Kill Me, Heal Me",
+    "similarity": 0.9773133554
+  },
+  {
+    "show1": "Kill Me, Heal Me",
+    "show2": "My Girlfriend is a Gumiho",
+    "similarity": 0.9760320752
+  },
+  {
+    "show1": "My Girl",
+    "show2": "Queen In Hyun's Man",
+    "similarity": 0.9759043287
+  },
+  {
+    "show1": "Boys Over Flowers",
+    "show2": "It's Okay, That's Love",
+    "similarity": 0.9756989017
+  },
+  {
+    "show1": "Goblin",
+    "show2": "Secret",
+    "similarity": 0.9753989921
+  },
+  {
+    "show1": "Healer",
+    "show2": "My Girlfriend is a Gumiho",
+    "similarity": 0.975023162
+  },
+  {
+    "show1": "Healer",
+    "show2": "Secret Garden",
+    "similarity": 0.9747655127
+  },
+  {
+    "show1": "Goblin",
+    "show2": "Kill Me, Heal Me",
+    "similarity": 0.9932264869
+  },
+  {
+    "show1": "Love in the Moonlight",
+    "show2": "Weightlifting Fairy Kim Bok Joo",
+    "similarity": 0.9740920394
+  },
+  {
+    "show1": "City Hunter",
+    "show2": "Secret Garden",
+    "similarity": 0.9735255015
+  },
+  {
+    "show1": "Boys Over Flowers",
+    "show2": "Coffee Prince",
+    "similarity": 0.9734840052
+  },
+  {
+    "show1": "Queen In Hyun's Man",
+    "show2": "Secret Garden",
+    "similarity": 0.9734830046
+  },
+  {
+    "show1": "Fated to Love You",
+    "show2": "Healer",
+    "similarity": 0.9733287428
+  },
+  {
+    "show1": "My Girlfriend is a Gumiho",
+    "show2": "Queen In Hyun's Man",
+    "similarity": 0.9730530591
+  },
+  {
+    "show1": "Pinocchio",
+    "show2": "Weightlifting Fairy Kim Bok Joo",
+    "similarity": 0.9725649654
+  },
+  {
+    "show1": "Kill Me, Heal Me",
+    "show2": "Weightlifting Fairy Kim Bok Joo",
+    "similarity": 0.9724469859
+  },
+  {
+    "show1": "Coffee Prince",
+    "show2": "Kill Me, Heal Me",
+    "similarity": 0.9717750229
+  },
+  {
+    "show1": "Boys Over Flowers",
+    "show2": "My Girlfriend is a Gumiho",
+    "similarity": 0.9717218001
+  },
+  {
+    "show1": "City Hunter",
+    "show2": "Queen In Hyun's Man",
+    "similarity": 0.993120366
+  },
+  {
+    "show1": "Coffee Prince",
+    "show2": "Healer",
+    "similarity": 0.9716521067
+  },
+  {
+    "show1": "It's Okay, That's Love",
+    "show2": "Pinocchio",
+    "similarity": 0.9715980608
+  },
+  {
+    "show1": "City Hunter",
+    "show2": "Healer",
+    "similarity": 0.971274509
+  },
+  {
+    "show1": "Fated to Love You",
+    "show2": "You Who Came from the Stars",
+    "similarity": 0.9712253999
+  },
+  {
+    "show1": "My Girlfriend is a Gumiho",
+    "show2": "Weightlifting Fairy Kim Bok Joo",
+    "similarity": 0.9711148861
+  },
+  {
+    "show1": "City Hunter",
+    "show2": "Secret",
+    "similarity": 0.9710321656
+  },
+  {
+    "show1": "It's Okay, That's Love",
+    "show2": "Weightlifting Fairy Kim Bok Joo",
+    "similarity": 0.9706520282
+  },
+  {
+    "show1": "City Hunter",
+    "show2": "Pinocchio",
+    "similarity": 0.9706416674
+  },
+  {
+    "show1": "Boys Over Flowers",
+    "show2": "Kill Me, Heal Me",
+    "similarity": 0.970034971
+  },
+  {
+    "show1": "Boys Over Flowers",
+    "show2": "Secret",
+    "similarity": 0.9700106171
+  },
+  {
+    "show1": "Kill Me, Heal Me",
+    "show2": "Queen In Hyun's Man",
+    "similarity": 0.9923139008
+  },
+  {
+    "show1": "My Girlfriend is a Gumiho",
+    "show2": "Pinocchio",
+    "similarity": 0.9699936258
+  },
+  {
+    "show1": "Full House ",
+    "show2": "My Girlfriend is a Gumiho",
+    "similarity": 0.9697678858
+  },
+  {
+    "show1": "My Girlfriend is a Gumiho",
+    "show2": "You Who Came from the Stars",
+    "similarity": 0.969154502
+  },
+  {
+    "show1": "Coffee Prince",
+    "show2": "Goblin",
+    "similarity": 0.9670323173
+  },
+  {
+    "show1": "It's Okay, That's Love",
+    "show2": "Kill Me, Heal Me",
+    "similarity": 0.9669635024
+  },
+  {
+    "show1": "Queen In Hyun's Man",
+    "show2": "Secret",
+    "similarity": 0.9666350206
+  },
+  {
+    "show1": "Fated to Love You",
+    "show2": "Goblin",
+    "similarity": 0.9664570879
+  },
+  {
+    "show1": "Secret",
+    "show2": "You Who Came from the Stars",
+    "similarity": 0.9660911162
+  },
+  {
+    "show1": "Healer",
+    "show2": "It's Okay, That's Love",
+    "similarity": 0.9656898073
+  },
+  {
+    "show1": "Kill Me, Heal Me",
+    "show2": "Secret Garden",
+    "similarity": 0.9655008175
+  },
+  {
+    "show1": "Goblin",
+    "show2": "It's Okay, That's Love",
+    "similarity": 0.9923002311
+  },
+  {
+    "show1": "My Girl",
+    "show2": "Secret",
+    "similarity": 0.9650997847
+  },
+  {
+    "show1": "My Girl",
+    "show2": "Weightlifting Fairy Kim Bok Joo",
+    "similarity": 0.9649232669
+  },
+  {
+    "show1": "Love in the Moonlight",
+    "show2": "Queen In Hyun's Man",
+    "similarity": 0.9641560782
+  },
+  {
+    "show1": "Coffee Prince",
+    "show2": "You Who Came from the Stars",
+    "similarity": 0.9641045885
+  },
+  {
+    "show1": "Love in the Moonlight",
+    "show2": "My Girlfriend is a Gumiho",
+    "similarity": 0.96409135
+  },
+  {
+    "show1": "City Hunter",
+    "show2": "You Who Came from the Stars",
+    "similarity": 0.9634628781
+  },
+  {
+    "show1": "Coffee Prince",
+    "show2": "Pinocchio",
+    "similarity": 0.9627834172
+  },
+  {
+    "show1": "City Hunter",
+    "show2": "It's Okay, That's Love",
+    "similarity": 0.9626276839
+  },
+  {
+    "show1": "Boys Over Flowers",
+    "show2": "Healer",
+    "similarity": 0.9614798805
+  },
+  {
+    "show1": "Goblin",
+    "show2": "Secret Garden",
+    "similarity": 0.9612402476
+  },
+  {
+    "show1": "Goblin",
+    "show2": "You Who Came from the Stars",
+    "similarity": 0.9919177879
+  },
+  {
+    "show1": "Fated to Love You",
+    "show2": "Pinocchio",
+    "similarity": 0.9606825808
+  },
+  {
+    "show1": "Coffee Prince",
+    "show2": "My Girl",
+    "similarity": 0.9596818713
+  },
+  {
+    "show1": "It's Okay, That's Love",
+    "show2": "You Who Came from the Stars",
+    "similarity": 0.9595990657
+  },
+  {
+    "show1": "Coffee Prince",
+    "show2": "Queen In Hyun's Man",
+    "similarity": 0.9582802403
+  },
+  {
+    "show1": "Coffee Prince",
+    "show2": "Secret Garden",
+    "similarity": 0.9580740167
+  },
+  {
+    "show1": "Coffee Prince",
+    "show2": "Secret",
+    "similarity": 0.9576982543
+  },
+  {
+    "show1": "City Hunter",
+    "show2": "My Girl",
+    "similarity": 0.9572522906
+  },
+  {
+    "show1": "Kill Me, Heal Me",
+    "show2": "Love in the Moonlight",
+    "similarity": 0.9568587048
+  },
+  {
+    "show1": "City Hunter",
+    "show2": "Coffee Prince",
+    "similarity": 0.9566186464
+  },
+  {
+    "show1": "It's Okay, That's Love",
+    "show2": "Queen In Hyun's Man",
+    "similarity": 0.9560128912
+  }
+]
