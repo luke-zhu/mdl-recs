@@ -1,28 +1,32 @@
-# INFO
-# This spider uses the urls stored in dramalist_links.json to get all of the
-# shows and scores each user's dramalist. I used Sublime Text to add 
-# http://www.mydramalist to the front of the URLs
-# 
-# Get the URLs by running the following command on your terminal:
-# scrapy runspider data_collection/profile_link.py -o data/scores.json
+"""This spider uses the urls stored in dramalist_links.json to get all of the
+shows and scores each user's dramalist. I used Sublime Text to add
+http://www.mydramalist to the front of the URLs
+
+Get the URLs by running the following command on your terminal:
+    scrapy runspider data_collection/profile_link.py -o data/scores.json
+"""
 
 import json
-
-import scrapy
 import logging
 
+import scrapy
+
+
 def profile_links():
-    with open('data/dramalist_links.json') as f:
-        data = json.load(f)
+    """Returns the urls of the profiles in dramalist_links.json.
+    """
+    with open('data/dramalist_links.json') as infile:
+        data = json.load(infile)
         links = [obj['dramalist_link'] for obj in data]
         return links
+
 
 class DramaListSpider(scrapy.Spider):
     name = 'dramalist'
     allowed_domains = ['mydramalist.com']
     start_urls = profile_links()
 
-    def parse(self, response):
+    def parse(self, response: scrapy.http.Response):
         # This function yields all the shows in a user's dramalist
         sections = response.css('div.mylist')
 
@@ -35,7 +39,8 @@ class DramaListSpider(scrapy.Spider):
                 year = show.css('td.sort3::text').extract_first()
                 show_type = show.css('td.sort4::text').extract_first()
                 score = show.css('td.sort5::attr(abbr)').extract_first()
-                episodes_seen, episodes_total = show.css('td.sort6 span::text').extract()
+                episodes_seen, episodes_total = show.css(
+                    'td.sort6 span::text').extract()
 
                 prefix_url = 'http://www.mydramalist'
                 yield {
@@ -49,13 +54,3 @@ class DramaListSpider(scrapy.Spider):
                     'episodes_seen': episodes_seen,
                     'episodes_total': episodes_total,
                 }
-
-
-# URL (not necessarly same as name)
-# Currently Watching
-# Completed
-# On Hold
-# Dropped
-# Plan to Watch
-        
-# Show - title, country, year, type, score, progress
