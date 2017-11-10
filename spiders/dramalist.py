@@ -1,9 +1,7 @@
-"""This spider uses the urls stored in dramalist_links.json to get all of the
-shows and scores each user's dramalist. I used Sublime Text to add
-http://www.mydramalist to the front of the URLs
+"""This spider uses the urls stored in dramalist_urls/ to get all of the
+shows and scores each user's dramalist.
 
-Get the URLs by running the following command on your terminal:
-    scrapy runspider data_collection/profile_link.py -o data/scores.json
+Run python3 dramalist.py collect the urls.
 """
 
 import glob
@@ -62,8 +60,8 @@ if __name__ == '__main__':
         'LOG_LEVEL': 'INFO',
         'LOG_FILE': '../logs/dramalist_spider.log',
         'FEED_FORMAT': 'jsonlines',
-        'FEED_URL': 'score',
-        'DOWNLOAD_DELAY': 0.25,
+        'FEED_URI': '../data/scores.json',
+        # 'DOWNLOAD_DELAY': 0.25,
     })
 
     start_urls = []

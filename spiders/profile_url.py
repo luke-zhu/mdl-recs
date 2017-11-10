@@ -1,5 +1,7 @@
 """This spider collects the profile URLs of users who have posted on
 any of the recent discussion threads.
+
+Run python3 profile_url.py to scrape the data in data/
 """
 
 import random
@@ -78,7 +80,7 @@ if __name__ == '__main__':
         'LOG_LEVEL': 'INFO',
         'LOG_FILE': '../logs/profile_url_spider.log',
         'FEED_URI': '../data/profile_urls-%(time)s.json',
-        'FEED_FORMAT': 'csv',
+        'FEED_FORMAT': 'jsonlines',
         'DOWNLOAD_DELAY': 1,
     })
     process.crawl(ProfileURLSpider)
