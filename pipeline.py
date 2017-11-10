@@ -1,3 +1,14 @@
+"""The data extraction pipeline.
+
+The final product will do the following:
+
+Run spiders/profile_url.py -> data/profile_urls.jsonl
+Process data/profile_urls.jsonl -> data/dramalist_urls/*.csv
+Run spiders/dramalist.py -> data/scores.jsonl
+Compute similarities from scores.jsonl -> similarities/*.csv
+"""
+
+# Todo: Write the complete sequential pipeline
 import pyspark
 from math import sqrt
 
@@ -41,7 +52,7 @@ def products(pair: tuple):
     return (user1, user2), (score1 * score2, score1 * score1, score2 * score2)
 
 
-# TODO: Refactor the lambdas into named functions
+# Todo: Refactor the lambdas into named functions
 def cosine_similarity(df: pyspark.sql.DataFrame) -> pyspark.rdd:
     """Takes in a Dataframe and uses Spark RDDs to compute
     the cosine similarity.

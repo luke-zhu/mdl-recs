@@ -1,12 +1,15 @@
 """This spider uses the urls stored in dramalist_urls/ to get all of the
 shows and scores each user's dramalist.
 
-Run python3 dramalist.py collect the urls.
+Run python3 dramalist.py collect the urls in scores.jsonl
+
+Note: The data and logs folders must be created manually first.
+
 """
 
-import glob
 import logging
-import os
+
+from glob import glob
 
 import scrapy
 import pandas as pd  # Fastest csv reader
@@ -15,6 +18,7 @@ from pandas.errors import EmptyDataError
 from scrapy.crawler import CrawlerProcess
 
 
+# Todo: Write unit and functionality tests
 class DramaListSpider(scrapy.Spider):
     """Extracts the scores from the dramalist URLs in start_urls.
     """
@@ -22,7 +26,12 @@ class DramaListSpider(scrapy.Spider):
     allowed_domains = ['mydramalist.com']
 
     def parse(self, response: scrapy.http.Response):
-        # This function yields all the shows in a user's dramalist
+        """Takes in a Response object referring to a dramalist
+        page (like https://mydramalist.com/dramalist/cyclotomic)
+        and yields the 6 td.sort fields in a flat JSON object.
+
+        All of the yielded fields are strings or NoneTypes.
+        """
         sections = response.css('div.box')
 
         for section in sections:
@@ -49,9 +58,9 @@ class DramaListSpider(scrapy.Spider):
                     'country': country,
                     'year': year,
                     'type': show_type,
-                    'score': score,
-                    'episodes_seen': episodes_seen,
-                    'episodes_total': episodes_total,
+                    'score': score,  # "0" default
+                    'episodes_seen': episodes_seen,  # Nullable
+                    'episodes_total': episodes_total,  # Nullable
                 }
 
 
@@ -60,12 +69,12 @@ if __name__ == '__main__':
         'LOG_LEVEL': 'INFO',
         'LOG_FILE': '../logs/dramalist_spider.log',
         'FEED_FORMAT': 'jsonlines',
-        'FEED_URI': '../data/scores.json',
-        # 'DOWNLOAD_DELAY': 0.25,
+        'FEED_URI': '../data/scores.jsonl',
+        'DOWNLOAD_DELAY': 1,
     })
 
     start_urls = []
-    for filename in glob.glob('../data/dramalist_urls/*.csv'):
+    for filename in glob('../data/dramalist_urls/*.csv'):
         try:
             df = pd.read_csv(filename, header=None, usecols=[0])
             start_urls.extend(df[0].values)
