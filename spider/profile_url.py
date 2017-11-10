@@ -1,16 +1,5 @@
 """This spider collects the profile URLs of users who have posted on
 any of the recent discussion threads.
-
-To store the URLs in data/profile_links.json, run the following
-command in your terminal while in the root directory of this
-project
-
-    scrapy runspider \
-        --output=data/profiles.json \
-        --output-format=jsonlines \
-        --loglevel=INFO \
-        --logfile=logs/profiles.log \
-        data_collection/profiles.py
 """
 
 import random
@@ -19,12 +8,14 @@ import logging
 
 import scrapy
 
+from scrapy.crawler import CrawlerProcess
 
-class ProfileLinkSpider(scrapy.Spider):
+
+class ProfileURLSpider(scrapy.Spider):
     """Spider that collects links to MyDramaList user profiles.
         example: https://mydramalist.com/profile/cyclotomic
     """
-    name = 'profiles'
+    name = 'profile'
     allowed_domains = ['mydramalist.com']
     start_urls = ['http://mydramalist.com/discussions/recent_discussions']
 
@@ -81,3 +72,14 @@ class ProfileLinkSpider(scrapy.Spider):
                         'Next discussion page: {}'.format(next_page_link))
             yield scrapy.Request(response.urljoin(next_page_link),
                                  callback=self.parse_discussion)
+
+if __name__ == '__main__':
+    process = CrawlerProcess({
+        'LOG_LEVEL': 'INFO',
+        'LOG_FILE': '../log/profile_url_spider.log',
+        'FEED_URI': '../data/profile_urls.json',
+        'FEED_FORMAT': 'csv',
+        'DOWNLOAD_DELAY': 1,
+    })
+    process.crawl(ProfileURLSpider)
+    process.start()
