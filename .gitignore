@@ -137,7 +137,6 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-data/
-logs/
+data
+logs
 .vscode
-
