@@ -98,7 +98,7 @@ instance/
 .scrapy
 
 # Sphinx documentation
-doc/_build/
+docs/_build/
 
 # PyBuilder
 target/
@@ -138,6 +138,6 @@ venv.bak/
 .mypy_cache/
 
 data/
-log/
+logs/
 .vscode
 

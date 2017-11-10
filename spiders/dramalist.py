@@ -8,12 +8,13 @@ Get the URLs by running the following command on your terminal:
 
 import glob
 import logging
+import os
 
 import scrapy
 import pandas as pd  # Fastest csv reader
 
+from pandas.errors import EmptyDataError
 from scrapy.crawler import CrawlerProcess
-from scrapy.settings import Settings
 
 
 class DramaListSpider(scrapy.Spider):
@@ -55,23 +56,25 @@ class DramaListSpider(scrapy.Spider):
                     'episodes_total': episodes_total,
                 }
 
-# if __name__ == '__main__':
-#     process = CrawlerProcess({
-#         'LOG_LEVEL': 'INFO',
-#         'LOG_FILE': 'log/dramalist_spider.log',
-#         'FEED_FORMAT': 'csv',
-#         'DOWNLOAD_DELAY': 1,
-#     })
-#     for filename in glob.glob('data/dramalists/*.csv'):
-#         try:
-#             df = pd.read_csv(filename, header=None, usecols=[0])
-#             DramaListSpider.start_urls = df[0].values
-#             uri = 'data/scores/' + filename.split('/')[-1]
-#             DramaListSpider.custom_settings = {'FEED_URI': uri}
-#             process.crawl(DramaListSpider)
-#             process.start()
-#             logging.log(logging.INFO,
-#                         'Scraping file {}'.format(filename))
-#         except pd.errors.EmptyDataError:
-#             logging.log(logging.INFO,
-#                         'File {} was empty'.format(filename))
+
+if __name__ == '__main__':
+    process = CrawlerProcess({
+        'LOG_LEVEL': 'INFO',
+        'LOG_FILE': '../logs/dramalist_spider.log',
+        'FEED_FORMAT': 'jsonlines',
+        'FEED_URL': 'score',
+        'DOWNLOAD_DELAY': 0.25,
+    })
+
+    start_urls = []
+    for filename in glob.glob('../data/dramalist_urls/*.csv'):
+        try:
+            df = pd.read_csv(filename, header=None, usecols=[0])
+            start_urls.extend(df[0].values)
+        except EmptyDataError:
+            logging.log(logging.INFO,
+                        'Empty file: {}'.format(filename))
+
+    DramaListSpider.start_urls = start_urls
+    process.crawl(DramaListSpider)
+    process.start()

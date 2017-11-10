@@ -9,15 +9,15 @@ def count_profile_urls(df):
     returns a DataFrame of unique dramalist links with the
     forum post counts of the corresponding user.
     """
-    counts = (df
-                .groupBy('profile_link')
+    count_df = (df
+                .groupBy('profile_url')
                 .count()
-                .select(regexp_replace('profile_link',
+                .select(regexp_replace('profile_url',
                                         'profile',
                                         'dramalist'),
                         'count')
                 .sort('count', ascending=False))
-    return counts
+    return count_df
 
 def compute_cosine_similarity(df):
     pass

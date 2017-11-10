@@ -15,7 +15,7 @@ class ProfileURLSpider(scrapy.Spider):
     """Spider that collects links to MyDramaList user profiles.
         example: https://mydramalist.com/profile/cyclotomic
     """
-    name = 'profile'
+    name = 'profile_url'
     allowed_domains = ['mydramalist.com']
     start_urls = ['http://mydramalist.com/discussions/recent_discussions']
 
@@ -62,7 +62,7 @@ class ProfileURLSpider(scrapy.Spider):
                         'No profile links found on {}'.format(response.url))
 
         for link in profile_links:
-            yield {'profile_link': response.urljoin(link)}
+            yield {'profile_url': response.urljoin(link)}
 
         # Continues if a next list page exists
         next_page = response.css('li.page-item.next a::attr(href)')
@@ -76,8 +76,8 @@ class ProfileURLSpider(scrapy.Spider):
 if __name__ == '__main__':
     process = CrawlerProcess({
         'LOG_LEVEL': 'INFO',
-        'LOG_FILE': '../log/profile_url_spider.log',
-        'FEED_URI': '../data/profile_urls.json',
+        'LOG_FILE': '../logs/profile_url_spider.log',
+        'FEED_URI': '../data/profile_urls-%(time)s.json',
         'FEED_FORMAT': 'csv',
         'DOWNLOAD_DELAY': 1,
     })
