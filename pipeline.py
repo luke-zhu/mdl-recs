@@ -52,6 +52,18 @@ def products(pair: tuple):
     return (user1, user2), (score1 * score2, score1 * score1, score2 * score2)
 
 
+def partial_cosine(df: pyspark.sql.DataFrame):
+    score_avgs = df.groupBy('title').avg('score')
+    # Finds users who have watched the most shows
+    top1000_users = (df
+                     .filter('score > 0')
+                     .groupBy('user')
+                     .count()
+                     .sort('count')
+                     .limit(1000))
+    return top1000_users
+
+
 # Todo: Refactor the lambdas into named functions
 def cosine_similarity(df: pyspark.sql.DataFrame) -> pyspark.rdd:
     """Takes in a Dataframe and uses Spark RDDs to compute
@@ -64,6 +76,7 @@ def cosine_similarity(df: pyspark.sql.DataFrame) -> pyspark.rdd:
             .filter(lambda row: row['score'] and row['score'] > 0)
             .map(lambda row: (row['title'], row['score']))
             .combineByKey(lambda score: (score, 1),
+                          # TODO: Subract score average
                           lambda pair, score: (
                               pair[0] + score, pair[1] + 1),
                           lambda pair1, pair2: (
@@ -75,7 +88,7 @@ def cosine_similarity(df: pyspark.sql.DataFrame) -> pyspark.rdd:
                .map(lambda row: (row['title'], (row['user'], row['score']))))
 
     similarities = (ratings
-                    .join(ratings) # Todo: Check join partitioning
+                    .join(ratings)  # Todo: Check join partitioning
                     # Tuples should contain scores from different users
                     .filter(lambda tup: tup[1][0] != tup[1][1])
                     .map(products)  # Todo: Filter if not enough common shows

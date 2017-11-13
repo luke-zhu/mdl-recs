@@ -14,11 +14,13 @@ const store = createStore(reducers);
 
 ReactDOM.render(
     <Provider store={store}>
-        <MuiThemeProvider>
-            <BrowserRouter>
-                <Route path="/" component={App}/>
-            </BrowserRouter>
-        </MuiThemeProvider>
+      <MuiThemeProvider>
+        <BrowserRouter>
+          <Route path="/" component={App}/>
+        </BrowserRouter>
+      </MuiThemeProvider>
     </Provider>,
-    document.getElementById('root'));
+    document.getElementById('root'),
+);
+
 registerServiceWorker();
