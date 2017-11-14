@@ -21,17 +21,19 @@ class CommentSpider(scrapy.Spider):
     prefix_url = 'https://beta4v.mydramalist.com/v1/threads?&c=title&t='
 
     custom_settings = {
-        'LOG_LEVEL': 'INFO', # Not working right now
-        'LOG_FILE': 'logs/comment_spider.log', # Not working right now
+        'LOG_LEVEL': 'INFO',  # Not working right now
+        'LOG_FILE': 'logs/comment_spider.log',  # Not working right now
         'DOWNLOAD_DELAY': 2,
     }
 
     def start_requests(self):
         """Returns urls of the form https://mydramalist.com/9025 from the
         number 1 up to 26000"""
-        ids = np.random.permutation(100) # Todo: Remove hard coded value
-        return [scrapy.Request('https://mydramalist.com/{}'.format(id))
-                for id in ids]
+        ids = np.random.permutation(
+            26000)  # Todo: Implement stopping after multiple 404s
+        # Returns a generator
+        return (scrapy.Request('https://mydramalist.com/{}'.format(id))
+                for id in ids)
 
     def parse(self, response: scrapy.http.Response):
         """Takes in a response to a show url of the form

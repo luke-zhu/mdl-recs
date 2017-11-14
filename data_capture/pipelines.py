@@ -7,20 +7,24 @@
 import os
 import json
 
+import time
+
 
 class CommentPipeline(object):
     file_index = 0
     file_size = 0  # The number of items in the file
 
     def open_spider(self, spider):
+        self.time_key = time.time()
         try:
-            os.mkdir('data/comments')
+            os.mkdir('data/comments-{}'.format(self.time_key))
         except FileExistsError:
             print('The directory data/comments already exists. Move or remove'
                   'the directory and retry running the spider')
             raise
         self.file = open(
-                'data/comments/part-{0:05d}.jl'.format(self.file_index),
+                'data/comments-{}/part-{0:05d}.jl'.format(self.time_key,
+                                                          self.file_index),
                 'w')
 
     def close_spider(self, spider):
@@ -30,7 +34,8 @@ class CommentPipeline(object):
         if self.file_size >= 100:
             self.file.close()
             self.file = open(
-                    'data/comments/part-{0:05d}.jl'.format(self.file_index),
+                    'data/comments-{}/part-{0:05d}.jl'.format(self.time_key,
+                                                              self.file_index),
                     'w')
             self.file_size = 0
             self.file_index += 1
