@@ -17,15 +17,15 @@ from scrapy.crawler import CrawlerProcess
 
 
 # Todo: Write unit and functionality tests
-class ProfileURLSpider(scrapy.Spider):
+class DiscussionSpider(scrapy.Spider):
     """Spider that collects links to MyDramaList user profiles.
         example: https://mydramalist.com/profile/cyclotomic
     """
-    name = 'profile_url'
+    name = 'discussion'
     allowed_domains = ['mydramalist.com']
     start_urls = ['http://mydramalist.com/discussions/recent_discussions']
 
-    def parse(self, response):
+    def parse(self, response: scrapy.http.Response):
         """Takes in a scrapy HTTP response to a discussion list page
         and calls parse discussion on each discussion on the page.
 
@@ -53,7 +53,7 @@ class ProfileURLSpider(scrapy.Spider):
                 logging.INFO, 'Next list page: {}'.format(next_page_link))
             yield scrapy.Request(response.urljoin(next_page_link))
 
-    def parse_discussion(self, response):
+    def parse_discussion(self, response: scrapy.http.Response):
         """Takes in a response object from a discussion page
         and yields the profile links of all
 
@@ -94,5 +94,5 @@ if __name__ == '__main__':
         'FEED_FORMAT': 'jsonlines',
         'DOWNLOAD_DELAY': 1,
     })
-    process.crawl(ProfileURLSpider)
+    process.crawl(DiscussionSpider)
     process.start()

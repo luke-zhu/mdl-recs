@@ -46,7 +46,7 @@ class DramaListSpider(scrapy.Spider):
 
                 progress = show.css('td.sort6 span::text').extract()
                 if progress:
-                    episodes_seen, episodes_total = progress
+                    episodes_seen, episodes_total = progress[1:]
                 else:
                     episodes_seen = None
                     episodes_total = None
