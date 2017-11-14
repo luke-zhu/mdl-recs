@@ -50,7 +50,7 @@ class DiscussionSpider(scrapy.Spider):
         if next_page:
             next_page_link = next_page.extract_first()
             logging.log(
-                logging.INFO, 'Next list page: {}'.format(next_page_link))
+                    logging.INFO, 'Next list page: {}'.format(next_page_link))
             yield scrapy.Request(response.urljoin(next_page_link))
 
     def parse_discussion(self, response: scrapy.http.Response):
@@ -61,7 +61,7 @@ class DiscussionSpider(scrapy.Spider):
             {'profile_link': 'https://mydramalist.com/profile/cyclotomic'}
         """
         profile_links = response.css(
-            'div.post__username a::attr(href)').extract()
+                'div.post__username a::attr(href)').extract()
 
         if not profile_links:
             logging.log(logging.ERROR,
@@ -79,20 +79,19 @@ class DiscussionSpider(scrapy.Spider):
             yield scrapy.Request(response.urljoin(next_page_link),
                                  callback=self.parse_discussion)
 
-
-if __name__ == '__main__':
-    """Scrapes profile URLS starting from the start_url
-    'http://mydramalist.com/discussions/recent_discussions'.
-    
-    The data is stored in the FEED_URI below. The logs are
-    stored in the LOG_FILE below.
-    """
-    process = CrawlerProcess({
-        'LOG_LEVEL': 'INFO',
-        'LOG_FILE': '../logs/profile_url_spider.log',
-        'FEED_URI': '../data/profile_urls.jsonl',
-        'FEED_FORMAT': 'jsonlines',
-        'DOWNLOAD_DELAY': 1,
-    })
-    process.crawl(DiscussionSpider)
-    process.start()
+# if __name__ == '__main__':
+#     """Scrapes profile URLS starting from the start_url
+#     'http://mydramalist.com/discussions/recent_discussions'.
+#
+#     The data is stored in the FEED_URI below. The logs are
+#     stored in the LOG_FILE below.
+#     """
+#     process = CrawlerProcess({
+#         'LOG_LEVEL': 'INFO',
+#         'LOG_FILE': '../logs/profile_url_spider.log',
+#         'FEED_URI': '../data/profile_urls.jsonl',
+#         'FEED_FORMAT': 'jsonlines',
+#         'DOWNLOAD_DELAY': 1,
+#     })
+#     process.crawl(DiscussionSpider)
+#     process.start()

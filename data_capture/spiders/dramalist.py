@@ -64,24 +64,24 @@ class DramaListSpider(scrapy.Spider):
                 }
 
 
-if __name__ == '__main__':
-    process = CrawlerProcess({
-        'LOG_LEVEL': 'INFO',
-        'LOG_FILE': '../logs/dramalist_spider.log',
-        'FEED_FORMAT': 'jsonlines',
-        'FEED_URI': '../data/scores.jsonl',
-        'DOWNLOAD_DELAY': 1,
-    })
-
-    start_urls = []
-    for filename in glob('../data/dramalist_urls/*.csv'):
-        try:
-            df = pd.read_csv(filename, header=None, usecols=[0])
-            start_urls.extend(df[0].values)
-        except EmptyDataError:
-            logging.log(logging.INFO,
-                        'Empty file: {}'.format(filename))
-
-    DramaListSpider.start_urls = start_urls
-    process.crawl(DramaListSpider)
-    process.start()
+# if __name__ == '__main__':
+#     process = CrawlerProcess({
+#         'LOG_LEVEL': 'INFO',
+#         'LOG_FILE': '../logs/dramalist_spider.log',
+#         'FEED_FORMAT': 'jsonlines',
+#         'FEED_URI': '../data/scores.jsonl',
+#         'DOWNLOAD_DELAY': 1,
+#     })
+#
+#     start_urls = []
+#     for filename in glob('../data/dramalist_urls/*.csv'):
+#         try:
+#             df = pd.read_csv(filename, header=None, usecols=[0])
+#             start_urls.extend(df[0].values)
+#         except EmptyDataError:
+#             logging.log(logging.INFO,
+#                         'Empty file: {}'.format(filename))
+#
+#     DramaListSpider.start_urls = start_urls
+#     process.crawl(DramaListSpider)
+#     process.start()
