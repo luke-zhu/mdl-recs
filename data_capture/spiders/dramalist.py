@@ -1,10 +1,5 @@
 """This spider uses the urls stored in dramalist_urls/ to get all of the
 shows and scores each user's dramalist.
-
-Run python3 dramalist.py collect the urls in scores.jsonl
-
-Note: The data and logs folders must be created manually first.
-
 """
 
 import logging
@@ -18,7 +13,6 @@ from pandas.errors import EmptyDataError
 from scrapy.crawler import CrawlerProcess
 
 
-# Todo: Write unit and functionality tests
 class DramaListSpider(scrapy.Spider):
     """Extracts the scores from the dramalist URLs in start_urls.
     """

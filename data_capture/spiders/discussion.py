@@ -1,10 +1,5 @@
 """This spider collects the profile URLs of users who have posted on
 any of the recent discussion threads.
-
-Run python3 profile_url.py to scrape then save the urls in
-data/profile_urls.jsonl
-
-Note: The data and logs folders must be created manually first.
 """
 
 import random
@@ -16,7 +11,6 @@ import scrapy
 from scrapy.crawler import CrawlerProcess
 
 
-# Todo: Write unit and functionality tests
 class DiscussionSpider(scrapy.Spider):
     """Spider that collects links to MyDramaList user profiles.
         example: https://mydramalist.com/profile/cyclotomic

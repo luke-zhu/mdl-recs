@@ -15,7 +15,6 @@ import scrapy
 #     pass
 
 
-
 class RecommendationItem(scrapy.Item):
     """A user recommendation for two shows"""
     id = scrapy.Field()

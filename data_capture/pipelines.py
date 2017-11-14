@@ -9,12 +9,21 @@ import json
 
 import time
 
+import scrapy
 
+
+# Todo: Move the ITEM_PIPELINE setting to custom_settings in CommentSpider
 class CommentPipeline(object):
+    """Processes items collected by t"""
     file_index = 0
     file_size = 0  # The number of items in the file
 
-    def open_spider(self, spider):
+    def open_spider(self, spider: scrapy.Spider):
+        """Creates initializes the output folders to store the
+        comment items.
+        """
+        if not os.path.isdir('data'):
+            os.mkdir('path')
         self.time_key = time.time()
         try:
             os.mkdir('data/comments-{}'.format(self.time_key))
@@ -27,10 +36,13 @@ class CommentPipeline(object):
                                                           self.file_index),
                 'w')
 
-    def close_spider(self, spider):
+    def close_spider(self, spider: scrapy.Spider):
         self.file.close()
 
-    def process_item(self, item, spider):
+    def process_item(self, item: dict, spider: scrapy.Spider):
+        """Writes the input item to a file in the directory. Changes the
+        output file if the current file contains at least 100 items.
+        """
         if self.file_size >= 100:
             self.file.close()
             self.file = open(

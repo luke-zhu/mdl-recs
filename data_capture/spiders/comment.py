@@ -12,16 +12,19 @@ import time
 class CommentSpider(scrapy.Spider):
     """Collects comment thread data from mydramalist.com show threads.
 
-    As of now run
+    To collect the comments, run the following command in your terminal:
+
         scrapy crawl comment --logfile logs/comment_spider.log -L INFO
-    in the root workspace directory to collect the data
+
+    This should be run in the root workspace directory.
     """
     name = 'comment'
     allowed_domains = ['mydramalist.com']
+    # Todo: Check for when this prefix_url will be changed
     prefix_url = 'https://beta4v.mydramalist.com/v1/threads?&c=title&t='
 
     custom_settings = {
-        'LOG_LEVEL': 'INFO',  # Not working right now
+        'LOG_LEVEL': 'INFO',  # Not working right now, use the terminal command
         'LOG_FILE': 'logs/comment_spider.log',  # Not working right now
         'DOWNLOAD_DELAY': 2,
     }
@@ -36,9 +39,9 @@ class CommentSpider(scrapy.Spider):
                 for id in ids)
 
     def parse(self, response: scrapy.http.Response):
-        """Takes in a response to a show url of the form
+        """Takes in a response from a show url of the form
         https://mydramalist.com/9025-nirvana-in-fire
-        and yields a request with a url to the show's comments.
+        and yields a request to the show's comments.
         """
         show_id = response.url[24:].split('-')[0]
         next_url = self.prefix_url + show_id + '&page=1'
@@ -46,9 +49,10 @@ class CommentSpider(scrapy.Spider):
                              callback=self.parse_comments)
 
     def parse_comments(self, response: scrapy.http.Response):
-        """Takes in a response to a comment thread JSON blob with url
-        ending in &page=SOME_NUMBER yields the JSON in the page and a request
-        to the next page, if it exists"""
+        """Takes in a response from a comment thread page with url
+        ending in &page=SOME_NUMBERand  yields the JSON in the
+        page. Also yields a request to the next page, if it exists.
+        """
         data = json.loads(response.body)
         show_id = parse_qs(response.url)['t'][0]
         data['show_id'] = show_id
