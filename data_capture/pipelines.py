@@ -8,16 +8,15 @@ import logging
 import os
 import json
 
-import time
-
 import scrapy
 
 
 # Todo: Move the ITEM_PIPELINE setting to custom_settings in CommentSpider
 class CommentPipeline(object):
     """Processes items collected by the comment spider"""
+
     def __init__(self):
-        self.file = None
+        self.file: os.io.TextIOWrapper = None
         self.file_index = 0
         self.file_size = 0
 
@@ -25,20 +24,26 @@ class CommentPipeline(object):
         """Creates initializes the output folders to store the
         comment items.
         """
-        if not os.path.isdir('data'):
+        try:
             os.mkdir('data')
+        except FileExistsError:
+            spider.log(' Directory data/ exists. Attempting to resume run.',
+                       level=logging.INFO)
         try:
             os.mkdir('data/comments')
         except FileExistsError:
-            spider.log('Directory exists. Attempting to resume run.',
+            spider.log('Directory data/comments/ exists. Attempting to'
+                       'resume run.',
                        level=logging.INFO)
+        # Todo: Remove when done, use scrapy's persistence methods instead
         try:
+            # Path used in comment.py as well
             with open('data/comments/state.txt') as f:
-                pipeline_state = json.loads(f.readline())
+                pipeline_state: dict = json.loads(f.readline())
                 self.file_index = pipeline_state['file_index']
                 self.file_size = pipeline_state['file_size']
         except FileNotFoundError:
-            spider.log('State file not found. Starting from beginning')
+            spider.log('State file not found. Crawling all pages')
         self.file = open(
                 'data/comments/part-{0:05d}.jl'.format(self.file_index),
                 'a')
@@ -49,7 +54,7 @@ class CommentPipeline(object):
         """
         self.file.close()
 
-    def process_item(self, item: dict, spider: scrapy.Spider):
+    def process_item(self, item: dict, spider: scrapy.Spider) -> dict:
         """Writes the input item to a file in the directory. Changes the
         output file if the current file contains at least 100 items.
         """

@@ -19,7 +19,7 @@ NEWSPIDER_MODULE = 'data_capture.spiders'
 #USER_AGENT = 'data_capture (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = False
+ROBOTSTXT_OBEY = False # Too many 301 redirects.
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
