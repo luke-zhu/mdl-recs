@@ -53,15 +53,15 @@ def persist_11_14():
 
     Overwrites the previous jsonlines
     """
-    data = load_jsonlines('data/comments/*')
+    data = load_jsonlines('data/comments/*.jl')
     show_ids = [{
         'status': 'scraped',
         'show_id': item['show_id'],
-    } for item in data]
+    } for item in data if not item['has_more']]
     with open('logs/comment_spider.log') as f:
         # Get to the start of the logs for the current session
         for line in f:
-            if line == '2017-11-14 16:36:51 [scrapy.core.engine] INFO: Spider opened':
+            if line.startswith('2017-11-14 16:36:51 [scrapy.core.engine] INFO: Spider opened'):
                 break
         pattern = re.compile(r'mydramalist\.com\/([0-9]+)')
         for line in f:
@@ -74,7 +74,9 @@ def persist_11_14():
                 })
             except AttributeError: # We skip NoneType errors
                 pass
+
     with open('data/comments/state.txt', 'w') as f:
+        f.write('{"file_index": 37, "file_size": 69}\n') # Todo: Remove hardcoding
         for item in show_ids:
             line = json.dumps(dict(item)) + '\n'
             f.write(line)

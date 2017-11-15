@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import logging
+import os
+
 import scrapy
 import numpy as np
 
@@ -22,21 +25,44 @@ class CommentSpider(scrapy.Spider):
     allowed_domains = ['mydramalist.com']
     # Todo: Check for when this prefix_url will be changed
     prefix_url = 'https://beta4v.mydramalist.com/v1/threads?&c=title&t='
+    state = set() # This represents the visited show_ids
 
     custom_settings = {
         'LOG_LEVEL': 'INFO',  # Not working right now, use the terminal command
         'LOG_FILE': 'logs/comment_spider.log',  # Not working right now
         'DOWNLOAD_DELAY': 2,
+        'CLOSESPIDER_ERRORCOUNT': 1,
     }
 
     def start_requests(self):
         """Returns urls of the form https://mydramalist.com/9025 from the
         number 1 up to 26000"""
-        ids = np.random.permutation(
-            26000)  # Todo: Implement stopping after multiple 404s
+        unvisited_ids = set(range(1, 26000))
+        self.load_state()
+        if self.state:
+            unvisited_ids -= self.state
+        self.log('Number of unvisited shows: {}'.format(len(unvisited_ids)),
+                 level=logging.INFO)
+        raise
         # Returns a generator
         return (scrapy.Request('https://mydramalist.com/{}'.format(id))
-                for id in ids)
+                for id in unvisited_ids)
+
+    def load_state(self):
+        """Loads the state to the item pipeline and to the
+        spider (for start requests)"""
+        filepath = 'data/comments/state.txt'  # Todo: Consider key
+        if os.path.isfile(filepath):
+            with open(filepath) as f:
+                pipeline_state = json.loads(f.readline())
+                file_index = pipeline_state['file_index']
+                file_size = pipeline_state['file_size']
+                for line in f:
+                    show_id = json.loads(line)['show_id']
+                    self.state.add(show_id)
+                print(file_size, file_index, self.state)
+        # Ensures that start_requests does not include already visited shows
+        # Todo: Ignore the last
 
     def parse(self, response: scrapy.http.Response):
         """Takes in a response from a show url of the form
