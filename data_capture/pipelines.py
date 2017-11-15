@@ -35,7 +35,7 @@ class CommentPipeline(object):
             spider.log('Directory data/comments/ exists. Attempting to'
                        'resume run.',
                        level=logging.INFO)
-        # Todo: Remove when done, use scrapy's persistence methods instead
+        # Todo: Remove mentions of state when done with current run
         try:
             # Path used in comment.py as well
             with open('data/comments/state.txt') as f:
@@ -44,9 +44,8 @@ class CommentPipeline(object):
                 self.file_size = pipeline_state['file_size']
         except FileNotFoundError:
             spider.log('State file not found. Crawling all pages')
-        self.file = open(
-                'data/comments/part-{0:05d}.jl'.format(self.file_index),
-                'a')
+        filename = 'data/comments/part-{0:05d}.jl'.format(self.file_index)
+        self.file = open(filename, 'a')
 
     def close_spider(self, spider: scrapy.Spider):
         """Closes the current open file and persists the
@@ -60,12 +59,15 @@ class CommentPipeline(object):
         """
         if self.file_size >= 100:
             self.file.close()
-            self.file = open(
-                    'data/comments/part-{0:05d}.jl'.format(self.file_index),
-                    'a')
+            filename = 'data/comments/part-{0:05d}.jl'.format(self.file_index)
+            self.file = open(filename, 'a')
             self.file_size = 0
             self.file_index += 1
         line = json.dumps(dict(item)) + '\n'
         self.file.write(line)
         self.file_size += 1
         return item
+
+
+class TestPipeline():
+    pass

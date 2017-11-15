@@ -47,7 +47,8 @@ def cleaning_11_14():
     save_jsonlines(data, 'data/comments')
 
 
-def parse_logs(show_ids):
+def parse_logs(show_id_items):
+    """Add show_id dictionaries to the list of show_id_items"""
     with open('logs/comment_spider.log') as f:
         # Get to the start of the logs for the current session
         for line in f:
@@ -59,7 +60,7 @@ def parse_logs(show_ids):
             match = pattern.search(line)
             try:
                 show_id = match.group(1)
-                show_ids.append({
+                show_id_items.append({
                     'status': 'errored',
                     'show_id': show_id,
                 })
@@ -73,7 +74,7 @@ def parse_logs(show_ids):
             match = pattern.search(line)
             try:
                 show_id = match.group(1)
-                show_ids.append({
+                show_id_items.append({
                     'status': 'errored',
                     'show_id': show_id,
                 })
@@ -90,17 +91,32 @@ def persist_11_14():
     scrapyd
     """
     data = load_jsonlines('data/comments/*.jl')
-    show_ids = [{
+    show_id_items = [{
         'status': 'scraped',
         'show_id': item['show_id'],
     } for item in data if not item['has_more']]
-    parse_logs(show_ids)
+    parse_logs(show_id_items)
     with open('data/comments/state.txt', 'w') as f:
         # Todo: Update file_index or remove hardcoding
-        f.write('{"file_index": 58, "file_size": 0}\n')
-        for item in show_ids:
+        num_files = len(glob('data/comments/*.jl'))
+        line = '{"file_index": ' + str(num_files) + ', "file_size": 0}\n'
+        f.write(line)
+        for item in show_id_items:
             line = json.dumps(dict(item)) + '\n'
             f.write(line)
+
+def print_num_shows():
+    data = load_jsonlines('data/comments/*.jl')
+    show_ids = {item['show_id'] for item in data}
+    print(len(show_ids))
+    errored_items = []
+    parse_logs(errored_items)
+    show_ids.union({item['show_id'] for item in errored_items})
+    print('Unique show_ids:', len(show_ids))
+
+
+def prune_shows():
+    pass
 
 
 if __name__ == '__main__':

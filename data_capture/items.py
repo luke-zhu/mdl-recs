@@ -14,7 +14,7 @@ import scrapy
 #     """A comment thread on a show information page"""
 #     pass
 
-
+# Todo: Include information about item type and nullability
 class RecommendationItem(scrapy.Item):
     """A user recommendation for two shows"""
     id = scrapy.Field()
@@ -43,16 +43,17 @@ class ReviewItem(scrapy.Item):
     review_text = scrapy.Field()
 
 
-class ShowItem(scrapy.Item):
+class ShowMetadataItem(scrapy.Item):
     """Information about a drama or movie"""
     id = scrapy.Field()
     url = scrapy.Field()
     title = scrapy.Field()
     date_started = scrapy.Field()
     date_ended = scrapy.Field()
+    duration = scrapy.Field()
     average_score = scrapy.Field()
-    num_rated = scrapy.Field()
-    num_watched = scrapy.Field()
+    num_users_rated = scrapy.Field()
+    num_users_watched = scrapy.Field()
     genres = scrapy.Field()
     country = scrapy.Field()
     num_episodes = scrapy.Field()

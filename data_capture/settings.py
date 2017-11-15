@@ -64,9 +64,10 @@ ROBOTSTXT_OBEY = False # Too many 301 redirects.
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-ITEM_PIPELINES = {
-   'data_capture.pipelines.CommentPipeline': 300,
-}
+
+# ITEM_PIPELINES = {
+#    'data_capture.pipelines.CommentPipeline': 300,
+# }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html

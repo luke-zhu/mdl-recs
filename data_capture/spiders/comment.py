@@ -26,6 +26,9 @@ class CommentSpider(scrapy.Spider):
         'LOG_LEVEL': 'INFO',
         'DOWNLOAD_DELAY': 0.5,
         # 'CLOSESPIDER_ERRORCOUNT': 1,
+        'ITEM_PIPELINES': {
+            'data_capture.pipelines.CommentPipeline': 300,
+        }
     }
 
     def start_requests(self) -> iter:
