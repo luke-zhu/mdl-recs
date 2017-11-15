@@ -137,6 +137,8 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# Project-specific folders
+.vscode
 data
 logs
-.vscode
+web/node_modules

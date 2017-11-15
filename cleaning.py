@@ -1,3 +1,8 @@
+"""A collection of small programs ran at some point to maintain
+the quality of the data.
+"""
+
+import re
 from glob import glob
 import json
 
@@ -35,9 +40,45 @@ def save_jsonlines(data, pathname):
         file_size += 1
 
 
-def cleaning11_14():
+def cleaning_11_14():
     """A cleaning routine done on 11/14 to resolve some schema issues"""
     data = load_jsonlines('data/comments/*')
     for item in data:
         item['show_id'] = item['show_id'][0]
     save_jsonlines(data, 'data/comments')
+
+
+def persist_11_14():
+    """Persisting the results from the spider in a file called state.txt
+
+    Overwrites the previous jsonlines
+    """
+    data = load_jsonlines('data/comments/*')
+    show_ids = [{
+        'status': 'scraped',
+        'show_id': item['show_id'],
+    } for item in data]
+    with open('logs/comment_spider.log') as f:
+        # Get to the start of the logs for the current session
+        for line in f:
+            if line == '2017-11-14 16:36:51 [scrapy.core.engine] INFO: Spider opened':
+                break
+        pattern = re.compile(r'mydramalist\.com\/([0-9]+)')
+        for line in f:
+            match = pattern.search(line)
+            try:
+                show_id = match.group(1)
+                show_ids.append({
+                    'status': 'errored',
+                    'show_id': show_id,
+                })
+            except AttributeError: # We skip NoneType errors
+                pass
+    with open('data/comments/state.txt', 'w') as f:
+        for item in show_ids:
+            line = json.dumps(dict(item)) + '\n'
+            f.write(line)
+
+
+if __name__ == '__main__':
+    persist_11_14()
