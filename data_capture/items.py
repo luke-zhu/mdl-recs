@@ -19,11 +19,7 @@ class RecommendationItem(scrapy.Item):
     """A user recommendation for two shows"""
     id = scrapy.Field()
     url = scrapy.Field()
-    show1_id = scrapy.Field()  # String, lexicographically before show2
-    show2_id = scrapy.Field()
-    show1_title = scrapy.Field()  # String, lexicographically before show2
-    show2_title = scrapy.Field()
-    date_posted = scrapy.Field()
+    show_ids = scrapy.Field()
     num_votes = scrapy.Field()
     rec_text = scrapy.Field()
 
@@ -32,7 +28,8 @@ class ReviewItem(scrapy.Item):
     """A user review for a show"""
     id = scrapy.Field()
     url = scrapy.Field()
-    title = scrapy.Field()  # The name of the show
+    show_id = scrapy.Field()
+    show_title = scrapy.Field()  # The name of the show
     date_posted = scrapy.Field()
     num_votes = scrapy.Field()  # THe number of helpful votes
     overall_score = scrapy.Field()

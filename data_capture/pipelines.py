@@ -11,9 +11,9 @@ import json
 import scrapy
 
 
-# Todo: Move the ITEM_PIPELINE setting to custom_settings in CommentSpider
-class CommentPipeline(object):
-    """Processes items collected by the comment spider"""
+class PaginatingPipeline(object):
+    """Outputs the items into paginated files in a directory named
+    after the """
 
     def __init__(self):
         self.file: os.io.TextIOWrapper = None
@@ -26,25 +26,15 @@ class CommentPipeline(object):
         """
         try:
             os.mkdir('data')
-        except FileExistsError:
-            spider.log(' Directory data/ exists. Attempting to resume run.',
+            spider.log(' Directory data/ created',
                        level=logging.INFO)
-        try:
-            os.mkdir('data/comments')
         except FileExistsError:
-            spider.log('Directory data/comments/ exists. Attempting to'
-                       'resume run.',
+            spider.log(' Directory data/ already exists',
                        level=logging.INFO)
-        # Todo: Remove mentions of state when done with current run
-        try:
-            # Path used in comment.py as well
-            with open('data/comments/state.txt') as f:
-                pipeline_state: dict = json.loads(f.readline())
-                self.file_index = pipeline_state['file_index']
-                self.file_size = pipeline_state['file_size']
-        except FileNotFoundError:
-            spider.log('State file not found. Crawling all pages')
-        filename = 'data/comments/part-{0:05d}.jl'.format(self.file_index)
+        os.mkdir('data/{}'.format(spider.name))
+        spider.log(' Directory data/{} created'.format(spider.name),
+                   level=logging.INFO)
+        filename = 'data/{0}/part-{1:05d}.jl'.format(spider.name, self.file_index)
         self.file = open(filename, 'a')
 
     def close_spider(self, spider: scrapy.Spider):
@@ -59,7 +49,7 @@ class CommentPipeline(object):
         """
         if self.file_size >= 100:
             self.file.close()
-            filename = 'data/comments/part-{0:05d}.jl'.format(self.file_index)
+            filename = 'data/{0}/part-{1:05d}.jl'.format(spider.name, self.file_index)
             self.file = open(filename, 'a')
             self.file_size = 0
             self.file_index += 1
@@ -67,7 +57,3 @@ class CommentPipeline(object):
         self.file.write(line)
         self.file_size += 1
         return item
-
-
-class TestPipeline():
-    pass

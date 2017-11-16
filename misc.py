@@ -7,10 +7,12 @@ from glob import glob
 import json
 from os.path import join
 
+import os
 
-def load_jsonlines(pathname):
+
+def load_jsonlines(path_pattern):
     """Loads the items with the given path into a single array"""
-    filenames = glob(pathname)
+    filenames = glob(path_pattern)
     data = []
     for file in filenames:
         with open(file) as f:
@@ -19,20 +21,22 @@ def load_jsonlines(pathname):
     return data
 
 
-def save_jsonlines(data, pathname):
+def save_jsonlines(data, dirpath):
     """Saves the data in the given directory in files named
     like part-00000, part-00001, 100 lines per file.
     """
     file_index = 0
     file_size = 0
-    filepath = join(pathname, 'part-{0:05d}.jl'.format(file_index))
+    if not os.path.isdir(dirpath):
+        os.mkdir(dirpath)
+    filepath = join(dirpath, 'part-{0:05d}.jl'.format(file_index))
     file = open(filepath, 'w')
     for item in data:
         if file_size >= 100:
             file.close()
             file_size = 0
             file_index += 1
-            filepath = join(pathname, 'part-{0:05d}.jl'.format(file_index))
+            filepath = join(dirpath, 'part-{0:05d}.jl'.format(file_index))
             file = open(filepath, 'w')
         line = json.dumps(dict(item)) + '\n'
         file.write(line)
@@ -115,9 +119,25 @@ def print_num_shows():
     print('Unique show_ids:', len(show_ids))
 
 
-def prune_shows():
-    pass
+def clean_comments():
+    """Ran on 11/15 at 6pm"""
+    data = load_jsonlines('data/comments/*.jl')
+    data = list(data)
+
+    unique = []
+    seen_urls = set()
+    for item in data:
+        if item['url'] not in seen_urls:
+            unique.append(item)
+            seen_urls.add(item['url'])
+    unique.sort(key=lambda x: int(x['show_id']))
+    save_jsonlines(unique, 'data/comments-unique')
 
 
 if __name__ == '__main__':
-    persist_11_14()
+    data = load_jsonlines('data/comments/*.jl')
+    show_ids = {row['show_id'] for row in data}
+    with open('data/show_ids.txt', 'w') as f:
+        for id in show_ids:
+            f.write(id + '\n')
+
