@@ -8,6 +8,7 @@
 import json
 import logging
 import os
+import time
 
 import scrapy
 
@@ -17,6 +18,7 @@ class PaginationPipeline(object):
     after the """
 
     def __init__(self):
+        self.key = int(time.time())
         self.file_index = 0
         self.file_size = 0
 
@@ -29,9 +31,9 @@ class PaginationPipeline(object):
             spider.log(' Directory data/ created', level=logging.INFO)
         except FileExistsError:
             spider.log(' Directory data/ already exists', level=logging.INFO)
-        os.mkdir('data/{}'.format(spider.name))
-        spider.log(' Directory data/{} created'.format(spider.name), level=logging.INFO)
-        filename = 'data/{0}/part-{1:05d}.jl'.format(spider.name, self.file_index)
+        os.mkdir('data/{}-{}'.format(spider.name, self.key))
+        spider.log(' Directory data/{}-{} created'.format(spider.name, self.key), level=logging.INFO)
+        filename = 'data/{0}-{1}/part-{2:05d}.jl'.format(spider.name, self.key, self.file_index)
         self.file = open(filename, 'a')
 
     def close_spider(self, spider: scrapy.Spider):
@@ -46,7 +48,7 @@ class PaginationPipeline(object):
         """
         if self.file_size >= 100:
             self.file.close()
-            filename = 'data/{0}/part-{1:05d}.jl'.format(spider.name, self.file_index)
+            filename = 'data/{0}-{}/part-{1:05d}.jl'.format(spider.name, self.key, self.file_index)
             self.file = open(filename, 'a')
             self.file_size = 0
             self.file_index += 1
