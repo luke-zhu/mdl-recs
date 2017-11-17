@@ -1,5 +1,5 @@
-"""A collection of small throwaway programs ran at some point to
-maintain the quality of the data.
+"""A collection of small throwaway programs ran at some point
+during development to keep the data organized.
 """
 
 import re
@@ -133,11 +133,12 @@ def clean_comments():
     unique.sort(key=lambda x: int(x['show_id']))
     save_jsonlines(unique, 'data/comments-unique')
 
+def include_resumed_files():
+    data = load_jsonlines('data/show/*.jl')
+    data += load_jsonlines('data/show-resumed/*.jl')
+    save_jsonlines(data, 'data/show2')
+
 
 if __name__ == '__main__':
-    data = load_jsonlines('data/comments/*.jl')
-    show_ids = {row['show_id'] for row in data}
-    with open('data/show_ids.txt', 'w') as f:
-        for id in show_ids:
-            f.write(id + '\n')
+    include_resumed_files()
 

@@ -45,6 +45,7 @@ class ShowMetadataItem(scrapy.Item):
     id = scrapy.Field()
     url = scrapy.Field()
     title = scrapy.Field()
+    # alt_titles
     date_started = scrapy.Field()
     date_ended = scrapy.Field()
     duration = scrapy.Field()
@@ -52,17 +53,17 @@ class ShowMetadataItem(scrapy.Item):
     num_users_rated = scrapy.Field()
     num_users_watched = scrapy.Field()
     genres = scrapy.Field()
+    # tags
     country = scrapy.Field()
     num_episodes = scrapy.Field()
     rank = scrapy.Field()
     popularity = scrapy.Field()
 
-
-class DiscussionPostItem(scrapy.Item):
-    """A post to a given discussion thread"""
-    pass
-
-
-class UserScoreItem(scrapy.Item):
-    """The score a user gave for a show"""
-    pass
+# class DiscussionPostItem(scrapy.Item):
+#     """A post to a given discussion thread"""
+#     pass
+#
+#
+# class UserScoreItem(scrapy.Item):
+#     """The score a user gave for a show"""
+#     pass

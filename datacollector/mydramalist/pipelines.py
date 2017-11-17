@@ -4,9 +4,10 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
+
+import json
 import logging
 import os
-import json
 
 import scrapy
 
@@ -16,7 +17,6 @@ class PaginationPipeline(object):
     after the """
 
     def __init__(self):
-        self.file: os.io.TextIOWrapper = None
         self.file_index = 0
         self.file_size = 0
 
@@ -26,14 +26,11 @@ class PaginationPipeline(object):
         """
         try:
             os.mkdir('data')
-            spider.log(' Directory data/ created',
-                       level=logging.INFO)
+            spider.log(' Directory data/ created', level=logging.INFO)
         except FileExistsError:
-            spider.log(' Directory data/ already exists',
-                       level=logging.INFO)
+            spider.log(' Directory data/ already exists', level=logging.INFO)
         os.mkdir('data/{}'.format(spider.name))
-        spider.log(' Directory data/{} created'.format(spider.name),
-                   level=logging.INFO)
+        spider.log(' Directory data/{} created'.format(spider.name), level=logging.INFO)
         filename = 'data/{0}/part-{1:05d}.jl'.format(spider.name, self.file_index)
         self.file = open(filename, 'a')
 

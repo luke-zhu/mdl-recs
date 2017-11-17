@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for data_collection project
+# Scrapy settings for mydramalist project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,17 +9,17 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'data_collection'
+BOT_NAME = 'mydramalist'
 
-SPIDER_MODULES = ['data_collection.spiders']
-NEWSPIDER_MODULE = 'data_collection.spiders'
+SPIDER_MODULES = ['mydramalist.spiders']
+NEWSPIDER_MODULE = 'mydramalist.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'data_collection (+http://www.yourdomain.com)'
+#USER_AGENT = 'mydramalist (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = False # Too many 301 redirects.
+ROBOTSTXT_OBEY = False # The beta site redirects to the main site
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -47,13 +47,13 @@ ROBOTSTXT_OBEY = False # Too many 301 redirects.
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'data_collection.middlewares.DataCaptureSpiderMiddleware': 543,
+#    'mydramalist.middlewares.MydramalistSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'data_collection.middlewares.MyCustomDownloaderMiddleware': 543,
+#    'mydramalist.middlewares.MyCustomDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -64,9 +64,9 @@ ROBOTSTXT_OBEY = False # Too many 301 redirects.
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-# ITEM_PIPELINES = {
-#    'data_collection.pipelines.PaginationPipeline': 300,
-# }
+#ITEM_PIPELINES = {
+#    'mydramalist.pipelines.MydramalistPipeline': 300,
+#}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html

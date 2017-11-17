@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 import json
-import logging
 from urllib.parse import parse_qs
+from typing import Generator
 
 import scrapy
 from scrapy.utils.log import configure_logging
 
-from data_collection.items import RecommendationItem, ReviewItem, ShowMetadataItem
+from ..items import (RecommendationItem, ReviewItem, ShowMetadataItem)
 
 
 class ShowSpider(scrapy.Spider):
@@ -23,35 +23,42 @@ class ShowSpider(scrapy.Spider):
     base_url = 'https://www.mydramalist.com/'
     comments_endpoint = 'https://beta4v.mydramalist.com/v1/threads?&c=title&t='
 
+    # start_urls = ['https://mydramalist.com/search?adv=titles']
+
     def __init__(self, *args, **kwargs):
         configure_logging(
             {'LOG_LEVEL': 'INFO', 'LOG_FILE': 'logs/show_spider.log', 'LOG_ENABLED': True, })
         super().__init__(*args, **kwargs)
 
-    def start_requests(self):
+    def start_requests(self) -> Generator[scrapy.Request, None, None]:
         """Yields a generator of requests to show homepages using
         ids in the file data/show_ids.txt"""
         # Todo: Make show_ids.txt public, keep the ids updated as new shows are added
+        # Todo: Start from this url https://mydramalist.com/search?adv=titles
         show_ids = []
         with open('data/show_ids.txt') as f:
             for line in f:
                 show_ids.append(line.strip())
         return (scrapy.Request('https://www.mydramalist.com/' + id) for id in show_ids)
 
-    def parse(self, response: scrapy.http.Response):
+    def parse_all(self, response: scrapy.http.Response) -> Generator:
+        pass
+
+    def parse(self, response: scrapy.http.Response) -> Generator:
         """Takes in a response from a show page
         (e.g. https://mydramalist.com/9025-nirvana-in-fire)
-        and yields the data described in items.py
+        and yields the metadata, reviews, and recs from
+        the
         """
-        self.parse_metadata(response)
+        yield from self.parse_metadata(response)
         yield scrapy.Request(response.url + '/reviews', callback=self.parse_reviews)
         yield scrapy.Request(response.url + '/recs', callback=self.parse_recommendations)
-        # Todo: Uncomment when done with current scrape
-        # show_id = response.url[24:].split('-')[0]
-        # yield scrapy.Request(self.comments_endpoint + show_id + '&page=1',
-        #                      callback=self.parse_recommendations)
+        show_id = response.url[24:].split('-')[0]
+        yield scrapy.Request(self.comments_endpoint + show_id + '&page=1',
+                             callback=self.parse_recommendations)
 
-    def parse_metadata(self, response: scrapy.http.Response):
+    def parse_metadata(self, response: scrapy.http.Response) -> Generator[
+        ShowMetadataItem, None, None]:
         """Takes in a response from a show homepage
         (e.g. https://mydramalist.com/9025-nirvana-in-fire) and
         yields the contained show metadata.
@@ -84,7 +91,7 @@ class ShowSpider(scrapy.Spider):
 
         yield metadata
 
-    def parse_reviews(self, response: scrapy.http.Response):
+    def parse_reviews(self, response: scrapy.http.Response) -> Generator[ReviewItem, None, None]:
         """Takes in a response from a user review page and
         (e.g. https://mydramalist.com/9025-nirvana-in-fire/reviews)
         yields the contained review data.
@@ -106,7 +113,8 @@ class ShowSpider(scrapy.Spider):
             review['review_text'] = ''.join(selector.css('.review-body::text').extract())
             yield review
 
-    def parse_recommendations(self, response: scrapy.http.Response):
+    def parse_recommendations(self, response: scrapy.http.Response) -> Generator[
+        RecommendationItem, None, None]:
         """Takes in a response from a show recommendation page
         (e.g. https://mydramalist.com/9025-nirvana-in-fire/recs)
         and yields the contained user recs.
@@ -122,7 +130,7 @@ class ShowSpider(scrapy.Spider):
             rec['rec_text'] = ''.join(selector.css('.recs-body::text').extract())
             yield rec
 
-    def parse_comments(self, response: scrapy.http.Response):
+    def parse_comments(self, response: scrapy.http.Response) -> Generator[dict, None, None]:
         """Takes in a response from a comment thread page
         (e.g. https://beta4v.mydramalist.com/v1/threads?&c=title&t=9025&page=1)
         and yields. Also yields a request to the next comment
