@@ -11,7 +11,7 @@ import json
 import scrapy
 
 
-class PaginatingPipeline(object):
+class PaginationPipeline(object):
     """Outputs the items into paginated files in a directory named
     after the """
 

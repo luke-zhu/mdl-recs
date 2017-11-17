@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for data_capture project
+# Scrapy settings for data_collection project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,14 +9,14 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'data_capture'
+BOT_NAME = 'data_collection'
 
-SPIDER_MODULES = ['data_capture.spiders']
-NEWSPIDER_MODULE = 'data_capture.spiders'
+SPIDER_MODULES = ['data_collection.spiders']
+NEWSPIDER_MODULE = 'data_collection.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'data_capture (+http://www.yourdomain.com)'
+#USER_AGENT = 'data_collection (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False # Too many 301 redirects.
@@ -47,13 +47,13 @@ ROBOTSTXT_OBEY = False # Too many 301 redirects.
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'data_capture.middlewares.DataCaptureSpiderMiddleware': 543,
+#    'data_collection.middlewares.DataCaptureSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'data_capture.middlewares.MyCustomDownloaderMiddleware': 543,
+#    'data_collection.middlewares.MyCustomDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -64,9 +64,8 @@ ROBOTSTXT_OBEY = False # Too many 301 redirects.
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-
 # ITEM_PIPELINES = {
-#    'data_capture.pipelines.CommentPipeline': 300,
+#    'data_collection.pipelines.PaginationPipeline': 300,
 # }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
