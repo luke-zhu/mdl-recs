@@ -48,7 +48,7 @@ class PaginationPipeline(object):
         """
         if self.file_size >= 100:
             self.file.close()
-            filename = 'data/{0}-{}/part-{1:05d}.jl'.format(spider.name, self.key, self.file_index)
+            filename = 'data/{0}-{1}/part-{2:05d}.jl'.format(spider.name, self.key, self.file_index)
             self.file = open(filename, 'a')
             self.file_size = 0
             self.file_index += 1

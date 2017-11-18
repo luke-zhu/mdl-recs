@@ -4,7 +4,7 @@ from typing import Generator
 from urllib.parse import parse_qs
 
 import scrapy
-from scrapy.utils.log import configure_logging
+import scrapy.utils.log
 
 from ..items import (RecommendationItem, ReviewItem, ShowItem)
 
@@ -17,7 +17,9 @@ class ShowSpider(scrapy.Spider):
     """
     name = "show"
     allowed_domains = ["mydramalist.com"]
-    custom_settings = {'DOWNLOAD_DELAY': 1, 'CLOSESPIDER_ERRORCOUNT': 10, }
+    custom_settings = {'DOWNLOAD_DELAY': 1,
+                       'ITEM_PIPELINES': {'mydramalist.pipelines.PaginationPipeline': 300},
+                       'CLOSESPIDER_ERRORCOUNT': 10, }
     base_url = 'https://www.mydramalist.com/'
     comments_endpoint = 'https://beta4v.mydramalist.com/v1/threads?&c=title&t='
 
@@ -25,19 +27,20 @@ class ShowSpider(scrapy.Spider):
 
     def __init__(self, test=False, *args, **kwargs):
         if not test:
-            self.custom_settings['ITEM_PIPELINES'] = {
-                'mydramalist.pipelines.PaginationPipeline': 300}
-            configure_logging(
+            scrapy.utils.log.configure_logging(
                 {'LOG_LEVEL': 'INFO', 'LOG_FILE': 'logs/show.log', 'LOG_ENABLED': True, })
         super().__init__(*args, **kwargs)
 
     def parse(self, response: scrapy.http.Response) -> Generator:
+        """Takes in a response from a start url and yields the data from each of the
+        up to 20 shows in the main list.
+        """
         for url in response.css('.title a::attr(href)').extract():
             yield scrapy.Request(response.urljoin(url), callback=self.parse_show)
 
         next_url = response.css('.next a::attr(href)').extract_first()
-        # if next_url:
-        #     yield scrapy.Request(response.urljoin(next_url))
+        if next_url:
+            yield scrapy.Request(response.urljoin(next_url))
 
     def parse_show(self, response: scrapy.http.Response) -> Generator:
         """Takes in a response from a show page
@@ -83,13 +86,13 @@ class ShowSpider(scrapy.Spider):
                 metadata['country'] = list_item.css('li::text')[0].extract().strip()
             if list_item.css('b::text').extract_first() == 'Network:':
                 metadata['network'] = list_item.css('a::text')[0].extract().strip()
-
-        date_strings = details_box.css('li[itemprop=datePublished]::text')[0].extract().split('-')
-        metadata['release_date'] = date_strings[0].strip()
-        try:
-            metadata['end_date'] = date_strings[1].strip()  # Note: This may equal the string '?'
-        except IndexError:
-            metadata['end_date'] = None
+            if list_item.css('b::text').extract_first() in ('Release Date:', 'Aired:', 'Airs:'):
+                date_strings = list_item.css('li::text')[0].extract().split('-')
+                try:
+                    metadata['release_date'] = date_strings[0].strip()
+                    metadata['end_date'] = date_strings[1].strip()  # Note: This may equal the string '?'
+                except IndexError:
+                    metadata['end_date'] = None
 
         metadata['genres'] = response.css('.show-genres a::text').extract()
         metadata['tags'] = response.css('.show-tags a::text').extract()
@@ -105,6 +108,8 @@ class ShowSpider(scrapy.Spider):
             if list_item.css('b::text').extract_first() == 'Also Known as:':
                 alts = list_item.css('li::text')[0].extract()
                 metadata['alt_titles'] = [title.strip() for title in alts.split(';')][:-1]
+
+        metadata['synopsis'] = ''.join(main_box.css('.show-synopsis ::text').extract())
         # Todo:
         # metadata['related_titles']
         # Todo:

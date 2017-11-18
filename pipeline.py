@@ -1,13 +1,11 @@
 """A script encapsulating the full data extraction pipeline.
 """
-
-# Todo: Write the complete sequential pipeline
-from pyspark import SparkConf
-from pyspark.sql import SparkSession
+from dataloaders import ShowDataLoader
 
 if __name__ == '__main__':
-    spark = (SparkSession
-             .builder
-             .appName("User post counts")
-             .config(conf=SparkConf())
-             .getOrCreate())
+    loader = ShowDataLoader()
+    loader.process_show_data('datacollectors/data/show-1510961743', 'data/show-1510961743')
+
+
+    # spark = (
+    #     SparkSession.builder.appName("User post counts").config(conf=SparkConf()).getOrCreate())
