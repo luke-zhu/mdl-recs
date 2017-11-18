@@ -9,6 +9,7 @@ import scrapy.utils.log
 from ..items import (RecommendationItem, ReviewItem, ShowItem)
 
 
+# Todo: Run again to collect review text
 class ShowSpider(scrapy.Spider):
     """Collects drama and movie data, given a file of show ids shows_ids.txt
     Run the spider by calling
@@ -17,10 +18,10 @@ class ShowSpider(scrapy.Spider):
     """
     name = "show"
     allowed_domains = ["mydramalist.com"]
-    custom_settings = {'DOWNLOAD_DELAY': 1,
-                       'ITEM_PIPELINES': {'mydramalist.pipelines.PaginationPipeline': 300},
-                       'CLOSESPIDER_ERRORCOUNT': 10, }
+    custom_settings = {'DOWNLOAD_DELAY': 1,  # 'CLOSESPIDER_ERRORCOUNT': 10,
+                       'ITEM_PIPELINES': {'mydramalist.pipelines.PaginationPipeline': 300}, }
     base_url = 'https://www.mydramalist.com/'
+
     comments_endpoint = 'https://beta4v.mydramalist.com/v1/threads?&c=title&t='
 
     start_urls = ['https://mydramalist.com/search?adv=titles']
@@ -76,7 +77,6 @@ class ShowSpider(scrapy.Spider):
         metadata['type'] = details_box.css('b::text')[0].extract()[:-1]
         metadata['content_rating'] = details_box.css('li.content-rating::text')[0].extract().strip()
         # metadata['status'] Todo
-
         for list_item in details_box.css('li'):
             if list_item.css('b::text').extract_first() == 'Duration:':
                 metadata['duration'] = list_item.css('li::text')[0].extract().strip()
@@ -88,9 +88,10 @@ class ShowSpider(scrapy.Spider):
                 metadata['network'] = list_item.css('a::text')[0].extract().strip()
             if list_item.css('b::text').extract_first() in ('Release Date:', 'Aired:', 'Airs:'):
                 date_strings = list_item.css('li::text')[0].extract().split('-')
+                metadata['release_date'] = date_strings[0].strip()
                 try:
-                    metadata['release_date'] = date_strings[0].strip()
-                    metadata['end_date'] = date_strings[1].strip()  # Note: This may equal the string '?'
+                    # Note: This may equal the string '?'
+                    metadata['end_date'] = date_strings[1].strip()
                 except IndexError:
                     metadata['end_date'] = None
 
@@ -138,9 +139,9 @@ class ShowSpider(scrapy.Spider):
             review['id'] = int(selector.css('.review::attr(id)')[0].extract()[7:])
             review['url'] = selector.css('.actions a::attr(href)')[0].extract()
             review['show_id'] = response.css('[property*=rid]::attr(content)')[0].extract()
-            review['show_title'] = response.css('[property*=title]::attr(content)').extract_first()
-            review['post_date'] = selector.css('.datetime::text').extract_first()
-            review['votes'] = int(selector.css('[class*=stats-helpful]::text').extract_first())
+            review['show_title'] = response.css('[property*=title]::attr(content)')[0].extract()
+            review['post_date'] = selector.css('.datetime::text')[0].extract()
+            review['votes'] = int(selector.css('[class*=stats-helpful]::text')[0].extract())
 
             review['overall_score'] = int(float(selector.css('.score::text')[0].extract()) * 10)
             subscores = selector.css('.p-l-md::text').extract()
@@ -148,7 +149,8 @@ class ShowSpider(scrapy.Spider):
             review['acting_score'] = int(float(subscores[1]) * 10)
             review['music_score'] = int(float(subscores[2]) * 10)
             review['rewatch_score'] = int(float(subscores[3]) * 10)
-            review['text'] = ''.join(selector.css('.review-body::text').extract())
+            review['text'] = ''.join(
+                selector.css('.review-body,.review-bodyfull-read ::text').extract())
             yield review
 
             next_url = response.css('.next a::attr(href)').extract_first()
@@ -170,7 +172,7 @@ class ShowSpider(scrapy.Spider):
             show_ids = {show_id1, selector.css('::attr(data-id)')[0].extract()}
             rec['show_ids'] = sorted(list(show_ids))
 
-            rec['votes'] = selector.css('.like-cnt::text').extract_first()
+            rec['votes'] = selector.css('.like-cnt::text')[0].extract()
             rec['text'] = ''.join(selector.css('.recs-body::text').extract())
             yield rec
 

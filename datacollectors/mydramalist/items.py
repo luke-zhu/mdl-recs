@@ -16,66 +16,65 @@ import scrapy
 
 class RecommendationItem(scrapy.Item):
     """A user recommendation for two shows"""
-    id = scrapy.Field()  # Required
-    url = scrapy.Field()  # Required
-    show_ids = scrapy.Field()  # Required
+    id = scrapy.Field()  # REQUIRED
+    url = scrapy.Field()  # REQUIRED
+    show_ids = scrapy.Field()  # REQUIRED
 
-    votes = scrapy.Field()
-    text = scrapy.Field()
+    votes = scrapy.Field()  # REQUIRED
+    text = scrapy.Field()  # # REQUIRED, Todo: defaults to "" should default to NULL
 
 
 class ReviewItem(scrapy.Item):
     """A user review for a show"""
-    id = scrapy.Field()  # Required
-    url = scrapy.Field()  # Required
-    show_id = scrapy.Field()  # Required
-    show_title = scrapy.Field()
-    post_date = scrapy.Field()
-    votes = scrapy.Field()  # The number of helpful votes
+    id = scrapy.Field()  # REQUIRED
+    url = scrapy.Field()  # REQUIRED
+    show_id = scrapy.Field()  # REQUIRED
+    show_title = scrapy.Field()  # REQUIRED
+    post_date = scrapy.Field()  # REQUIRED
+    votes = scrapy.Field()  # REQUIRED
 
-    overall_score = scrapy.Field()
-    story_score = scrapy.Field()
-    acting_score = scrapy.Field()
-    music_score = scrapy.Field()
-    rewatch_score = scrapy.Field()
+    overall_score = scrapy.Field()  # REQUIRED # Todo: Make sure it does not default to 0
+    story_score = scrapy.Field()  # REQUIRED
+    acting_score = scrapy.Field()  # REQUIRED
+    music_score = scrapy.Field()  # REQUIRED
+    rewatch_score = scrapy.Field()  # REQUIRED
 
-    text = scrapy.Field()
+    text = scrapy.Field()  # REQUIRED, Todo: defaults to "" should default to NULL
 
 
 class ShowItem(scrapy.Item):
     """Information about a drama or movie"""
-    id = scrapy.Field()  # int, required
-    url = scrapy.Field()  # string,required
+    id = scrapy.Field()  # int, REQUIRED
+    url = scrapy.Field()  # string, REQUIRED
 
-    main_title = scrapy.Field()  # string, required
-    native_title = scrapy.Field()  # string, required
-    alt_titles = scrapy.Field()  # list of strings,
-    synopsis = scrapy.Field()
+    main_title = scrapy.Field()  # string, REQUIRED
 
-    type = scrapy.Field()  # string/category
-    content_rating = scrapy.Field()  # string/category
-    status = scrapy.Field()  # string/category
-    duration = scrapy.Field()  # string
-    episodes = scrapy.Field()  # int
+    type = scrapy.Field()  # string/category, REQUIRED?? Todo: Validate and ensure not null
+    content_rating = scrapy.Field()  # string/category, defaults to Not Yet Rated
+    # status = scrapy.Field()  # string/category Todo
+    duration = scrapy.Field()  # string, optional
+    episodes = scrapy.Field()  # int, optional
+    country = scrapy.Field()  # string/category, REQUIRED?? Todo: Validate and ensure not null
+    network = scrapy.Field()  # string/category, optional
 
-    country = scrapy.Field()  #
-    network = scrapy.Field()  #
+    # related_titles = scrapy.Field()  # list of objects/pairs, Todo
+    # cast = scrapy.Field()  # List of Cast objects, Todo
 
-    related_titles = scrapy.Field()  # list of objects/pairs, Todo
+    release_date = scrapy.Field()  # date string, REQUIRED Todo: Validate and ensure not null
+    end_date = scrapy.Field()  # date, optional
 
-    cast = scrapy.Field()  # List of Cast objects, Todo
+    genres = scrapy.Field()  # list of strings, defaults to empty list
+    tags = scrapy.Field()  # list of strings,  defaults to empty list
 
-    release_date = scrapy.Field()  # date string not null
-    end_date = scrapy.Field()  # date
+    native_title = scrapy.Field()  # string, optional
+    alt_titles = scrapy.Field()  # list of strings, optional
+    synopsis = scrapy.Field()  # string, REQUIRED, "" if none
 
-    genres = scrapy.Field()
-    tags = scrapy.Field()
-
-    rank = scrapy.Field()
-    popularity = scrapy.Field()
-    score = scrapy.Field()
-    ratings = scrapy.Field()
-    members = scrapy.Field()
+    rank = scrapy.Field()  # int, default 99999
+    popularity = scrapy.Field()  # int, default 99999
+    score = scrapy.Field()  # int, REQUIRED, nullable
+    ratings = scrapy.Field()  # int, defaults to zero
+    members = scrapy.Field()  # int, REQUIRED?
 
 # class DiscussionPostItem(scrapy.Item):
 #     """A post to a given discussion thread"""

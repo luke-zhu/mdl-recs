@@ -1,7 +1,11 @@
 import glob
 import json
 import os
+import re
 
+import dateparser
+
+# Todo: Research and replace as much app-side processing w/ SQL
 class ShowDataLoader:
     """Cleans, validates, and loads the scraped data.
     """
@@ -11,7 +15,6 @@ class ShowDataLoader:
         self.reviews = []
         self.recs = []
         self.comments = []
-        pass
 
     def process_show_data(self, input_dirpath: str, output_dirpath: str):
         """Reads the show data from the given file input_dirpath, processes it, and
@@ -45,35 +48,64 @@ class ShowDataLoader:
                     print('Item does not match any of the conditions: {}'.format(item))
 
     def clean_data(self):
+        # Todo: Resolve NULL vs. "" vs [] for show
+        # Todo: episodes -> none, end date -> none, score -> none, network -> none
+        # Todo: alt_titles -> [], tags -> [], genres -> []
+        # Todo: RECOMMENDATION AND REVIEW Text -> none, synoposis -> none
+        # Todo: Rank/popularity -> none
         self.shows = self._unique(self.shows, 'id')
         self.reviews = self._unique(self.reviews, 'id')
         self.recs = self._unique(self.recs, 'id')
         self.comments = self._unique(self.comments, 'id')
 
-        for show in self.shows:
-            # 0 episodes to none
-            # duration to int
-            # release_date to iso
-            # end_date to iso
-            pass
+        duration_pattern = re.compile(r'(?:(\d)+ hr. )?(\d)+ min.')
+        for index, show in enumerate(self.shows):
+            try:
+                match_object = duration_pattern.search(show['duration'])
+                hours = match_object.group(1)
+                hours = int(hours) if hours else 0
+                minutes = match_object.group(2)
+                minutes = int(hours) if hours else 0
+                self.shows[index]['duration'] = 60 * hours + minutes
+            except (ValueError, AttributeError):
+                print(show['url'], show['duration'])
+                raise
+            except KeyError:
+                pass
+            self.shows[index]['release_date'] = dateparser.parse(show['release_date']).isoformat()
+            if 'episodes' in show and show['episodes'] == 0:
+                self.shows[index]['episodes'] = None
+            try:
+                self.shows[index]['end_date'] = dateparser.parse(show['end_date']).isoformat()
+            except (TypeError, AttributeError):
+                self.shows[index]['end_date'] = None
+            self.shows[index]['synopsis'] = show['synopsis'].strip()
 
+        to_remove = []  # indices of recs to remove
         for index, rec in enumerate(self.recs):
             self.recs[index]['text'] = rec['text'].strip()
             self.recs[index]['votes'] = int(rec['votes'])
-            self.recs[index]['show_ids'] = sorted([int(id) for id in rec['show_ids']])
+            try:
+                self.recs[index]['show_ids'] = sorted([int(id) for id in rec['show_ids']])
+            except:
+                to_remove.append(index)
             self.recs[index]['id'] = int(rec['id'])
+
+        for index in reversed(to_remove):
+            del self.recs[index]
 
         for index, review in enumerate(self.reviews):
             self.reviews[index]['show_id'] = int(review['show_id'])
-            self.reviews[index]['post_date'] = 0 # Todo: Turn date into iso format
+            post_datetime = dateparser.parse(review['post_date'])
+            self.reviews[index]['post_date'] = post_datetime.isoformat()
             self.reviews[index]['text'] = review['text'].strip()
 
         for index, comment in enumerate(self.comments):
             # Todo: Alot
             pass
 
-
-
+    def _standardize_nulls(self):
+        pass
 
     def _unique(self, data: list, primary_key) -> list:
         unique_ids = set()
@@ -87,7 +119,22 @@ class ShowDataLoader:
     def validate_data(self):
         # Since BigQuery already does type checks and null checks, we do range checks here
         # Todo: Range checks
-        pass
+        for show in self.shows:
+            # Optional: (-6) episodes, end date, score, network, alt_titles, native_title
+            # Todo: validate type, country not null
+            # Todo: Check that episodes, end date, score, network, alt_titles, native_title default correctly
+            # (-3 not implemented)
+            assert len(show) >= 15
+
+        for rec in self.recs:
+            # Todo: Check no nulls
+            # Todo: Check that rec text is none
+            assert len(rec) == 5
+
+        for review in self.reviews:
+            # Todo: Check no nulls
+            # Todo: Check that review text is none
+            assert len(review) == 12
 
     def save_data(self, dirpath: str):
         self.save_jsonlines(self.shows, os.path.join(dirpath, 'shows'))

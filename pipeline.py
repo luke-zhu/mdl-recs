@@ -4,7 +4,7 @@ from dataloaders import ShowDataLoader
 
 if __name__ == '__main__':
     loader = ShowDataLoader()
-    loader.process_show_data('datacollectors/data/show-1510961743', 'data/show-1510961743')
+    loader.process_show_data('datacollectors/data/show-1510980611', 'data/show-1510980611')
 
 
     # spark = (
