@@ -9,7 +9,6 @@ import scrapy.utils.log
 from ..items import (RecommendationItem, ReviewItem, ShowItem)
 
 
-# Todo: Run again to collect review text
 class ShowSpider(scrapy.Spider):
     """Collects drama and movie data, given a file of show ids shows_ids.txt
     Run the spider by calling
@@ -56,6 +55,7 @@ class ShowSpider(scrapy.Spider):
         yield scrapy.Request(self.comments_endpoint + show_id + '&page=1',
                              callback=self.parse_comments)
 
+    # Todo: Split this method into separate parts
     def parse_metadata(self, response: scrapy.http.Response) -> Generator[ShowItem, None, None]:
         """Takes in a response from a show homepage
         (e.g. https://mydramalist.com/9025-nirvana-in-fire) and
@@ -108,7 +108,7 @@ class ShowSpider(scrapy.Spider):
                 metadata['native_title'] = list_item.css('li::text')[0].extract().strip()
             if list_item.css('b::text').extract_first() == 'Also Known as:':
                 alts = list_item.css('li::text')[0].extract()
-                metadata['alt_titles'] = [title.strip() for title in alts.split(';')][:-1]
+                metadata['alt_titles'] = [title.strip() for title in alts.split(';') if title.strip()]
 
         metadata['synopsis'] = ''.join(main_box.css('.show-synopsis ::text').extract())
         # Todo:
@@ -150,7 +150,7 @@ class ShowSpider(scrapy.Spider):
             review['music_score'] = int(float(subscores[2]) * 10)
             review['rewatch_score'] = int(float(subscores[3]) * 10)
             review['text'] = ''.join(
-                selector.css('.review-body,.review-bodyfull-read ::text').extract())
+                selector.css('.review-body::text,.review-bodyfull-read::text').extract())
             yield review
 
             next_url = response.css('.next a::attr(href)').extract_first()

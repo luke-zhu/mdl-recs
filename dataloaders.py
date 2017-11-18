@@ -5,6 +5,7 @@ import re
 
 import dateparser
 
+
 # Todo: Research and replace as much app-side processing w/ SQL
 class ShowDataLoader:
     """Cleans, validates, and loads the scraped data.
@@ -34,10 +35,8 @@ class ShowDataLoader:
                     data.append(json.loads(line))
             for item in data:
                 if 'main_title' in item:  # Show
-                    # Todo: Flatten the data
                     self.shows.append(item)
                 elif 'has_more' in item:  # Comment
-                    # Todo: Split the comment items into separate records
                     for comment in item['items']:
                         self.comments.append(comment)
                 elif 'show_id' in item:  # Review
@@ -48,11 +47,6 @@ class ShowDataLoader:
                     print('Item does not match any of the conditions: {}'.format(item))
 
     def clean_data(self):
-        # Todo: Resolve NULL vs. "" vs [] for show
-        # Todo: episodes -> none, end date -> none, score -> none, network -> none
-        # Todo: alt_titles -> [], tags -> [], genres -> []
-        # Todo: RECOMMENDATION AND REVIEW Text -> none, synoposis -> none
-        # Todo: Rank/popularity -> none
         self.shows = self._unique(self.shows, 'id')
         self.reviews = self._unique(self.reviews, 'id')
         self.recs = self._unique(self.recs, 'id')
@@ -66,46 +60,56 @@ class ShowDataLoader:
                 hours = int(hours) if hours else 0
                 minutes = match_object.group(2)
                 minutes = int(hours) if hours else 0
-                self.shows[index]['duration'] = 60 * hours + minutes
+                show['duration'] = 60 * hours + minutes
             except (ValueError, AttributeError):
                 print(show['url'], show['duration'])
                 raise
             except KeyError:
                 pass
-            self.shows[index]['release_date'] = dateparser.parse(show['release_date']).isoformat()
+            show['release_date'] = dateparser.parse(show['release_date']).isoformat()
             if 'episodes' in show and show['episodes'] == 0:
-                self.shows[index]['episodes'] = None
+                show['episodes'] = None
             try:
-                self.shows[index]['end_date'] = dateparser.parse(show['end_date']).isoformat()
+                show['end_date'] = dateparser.parse(show['end_date']).isoformat()
             except (TypeError, AttributeError):
-                self.shows[index]['end_date'] = None
-            self.shows[index]['synopsis'] = show['synopsis'].strip()
+                show['end_date'] = None
+            show['synopsis'] = show['synopsis'].strip()
 
         to_remove = []  # indices of recs to remove
         for index, rec in enumerate(self.recs):
-            self.recs[index]['text'] = rec['text'].strip()
-            self.recs[index]['votes'] = int(rec['votes'])
+            rec['text'] = rec['text'].strip()
+            rec['votes'] = int(rec['votes'])
             try:
-                self.recs[index]['show_ids'] = sorted([int(id) for id in rec['show_ids']])
+                rec['show_ids'] = sorted([int(id) for id in rec['show_ids']])
             except:
                 to_remove.append(index)
-            self.recs[index]['id'] = int(rec['id'])
+            rec['id'] = int(rec['id'])
 
         for index in reversed(to_remove):
             del self.recs[index]
 
         for index, review in enumerate(self.reviews):
-            self.reviews[index]['show_id'] = int(review['show_id'])
+            review['show_id'] = int(review['show_id'])
             post_datetime = dateparser.parse(review['post_date'])
-            self.reviews[index]['post_date'] = post_datetime.isoformat()
-            self.reviews[index]['text'] = review['text'].strip()
+            review['post_date'] = post_datetime.isoformat()
+            review['text'] = review['text'].strip()
 
         for index, comment in enumerate(self.comments):
             # Todo: Alot
             pass
 
+        self._standardize_nulls()
+
     def _standardize_nulls(self):
-        pass
+        for show in self.shows:
+            if 'network' not in show:
+                show['network'] = ''
+            if 'alt_titles' not in show:
+                show['alt_titles'] = []
+            if show['rank'] == 99999:
+                show['rank'] = None
+            if show['popularity'] == 99999:
+                show['popularity'] = None
 
     def _unique(self, data: list, primary_key) -> list:
         unique_ids = set()
@@ -119,21 +123,43 @@ class ShowDataLoader:
     def validate_data(self):
         # Since BigQuery already does type checks and null checks, we do range checks here
         # Todo: Range checks
+        key_counts = {}
+        nullable = ('episodes', 'end_date', 'score', 'rank', 'popularity')
+        optional = ('episodes', 'network', 'alt_titles', 'native_title', 'duration')
         for show in self.shows:
-            # Optional: (-6) episodes, end date, score, network, alt_titles, native_title
-            # Todo: validate type, country not null
-            # Todo: Check that episodes, end date, score, network, alt_titles, native_title default correctly
+            # Optional: (-6) episodes, end_date, score, network, alt_titles, native_title
             # (-3 not implemented)
+            for key in show:
+                if key in key_counts:
+                    key_counts[key] += 1
+                else:
+                    key_counts[key] = 1
+        for key in key_counts:
+            if key not in optional:
+                assert key_counts[key] == len(self.shows)
+
+        for show in self.shows:
+            for key in show:
+                if key not in nullable:
+                    assert show[key] is not None
+            if 'episodes' in show:
+                assert show['episodes'] is not 0
+            if 'end_date' in show:
+                assert show['end_date'] not in ('', '?')
+            assert show['score'] is not 0
+            assert show['rank'] is not 99999
+            assert show['popularity'] is not 99999
             assert len(show) >= 15
+        print(len(self.shows), key_counts)
 
         for rec in self.recs:
-            # Todo: Check no nulls
-            # Todo: Check that rec text is none
+            for key in rec:
+                assert rec[key] is not None
             assert len(rec) == 5
 
         for review in self.reviews:
-            # Todo: Check no nulls
-            # Todo: Check that review text is none
+            for key in review:
+                assert review[key] is not None
             assert len(review) == 12
 
     def save_data(self, dirpath: str):

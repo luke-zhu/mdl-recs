@@ -21,7 +21,7 @@ class RecommendationItem(scrapy.Item):
     show_ids = scrapy.Field()  # REQUIRED
 
     votes = scrapy.Field()  # REQUIRED
-    text = scrapy.Field()  # # REQUIRED, Todo: defaults to "" should default to NULL
+    text = scrapy.Field()  # # REQUIRED
 
 
 class ReviewItem(scrapy.Item):
@@ -33,13 +33,13 @@ class ReviewItem(scrapy.Item):
     post_date = scrapy.Field()  # REQUIRED
     votes = scrapy.Field()  # REQUIRED
 
-    overall_score = scrapy.Field()  # REQUIRED # Todo: Make sure it does not default to 0
+    overall_score = scrapy.Field()  # REQUIRED
     story_score = scrapy.Field()  # REQUIRED
     acting_score = scrapy.Field()  # REQUIRED
     music_score = scrapy.Field()  # REQUIRED
     rewatch_score = scrapy.Field()  # REQUIRED
 
-    text = scrapy.Field()  # REQUIRED, Todo: defaults to "" should default to NULL
+    text = scrapy.Field()  # REQUIRED
 
 
 class ShowItem(scrapy.Item):
@@ -49,18 +49,18 @@ class ShowItem(scrapy.Item):
 
     main_title = scrapy.Field()  # string, REQUIRED
 
-    type = scrapy.Field()  # string/category, REQUIRED?? Todo: Validate and ensure not null
+    type = scrapy.Field()  # string/category, REQUIRED
     content_rating = scrapy.Field()  # string/category, defaults to Not Yet Rated
     # status = scrapy.Field()  # string/category Todo
     duration = scrapy.Field()  # string, optional
     episodes = scrapy.Field()  # int, optional
-    country = scrapy.Field()  # string/category, REQUIRED?? Todo: Validate and ensure not null
+    country = scrapy.Field()  # string/category, REQUIRED
     network = scrapy.Field()  # string/category, optional
 
     # related_titles = scrapy.Field()  # list of objects/pairs, Todo
     # cast = scrapy.Field()  # List of Cast objects, Todo
 
-    release_date = scrapy.Field()  # date string, REQUIRED Todo: Validate and ensure not null
+    release_date = scrapy.Field()  # date string, REQUIRED
     end_date = scrapy.Field()  # date, optional
 
     genres = scrapy.Field()  # list of strings, defaults to empty list

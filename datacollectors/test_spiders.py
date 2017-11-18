@@ -53,3 +53,5 @@ def test_old_movie():
 
     output = process.stderr.decode()
     assert 'ERROR' not in output
+
+# Todo: Test https://mydramalist.com/159-akai-ito
