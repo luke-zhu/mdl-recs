@@ -23,7 +23,8 @@ class ShowSpider(scrapy.Spider):
 
     comments_endpoint = 'https://beta4v.mydramalist.com/v1/threads?&c=title&t='
 
-    start_urls = ['https://mydramalist.com/search?adv=titles']
+    # Issue, don't use the list page, iterate from 1 to max
+    start_urls = ['https://mydramalist.com/search?adv=titles&so=recently']
 
     def __init__(self, test=False, *args, **kwargs):
         if not test:
@@ -32,15 +33,14 @@ class ShowSpider(scrapy.Spider):
         super().__init__(*args, **kwargs)
 
     def parse(self, response: scrapy.http.Response) -> Generator:
-        """Takes in a response from a start url and yields the data from each of the
-        up to 20 shows in the main list.
+        """Gets the most show (the show with the highest id) and
+        and sends HTTP requests to all pages.
         """
-        for url in response.css('.title a::attr(href)').extract():
-            yield scrapy.Request(response.urljoin(url), callback=self.parse_show)
+        most_recent_url = response.css('.title a::attr(href)').extract_first()
+        highest_id = int(most_recent_url.split('-')[0][1:])
 
-        next_url = response.css('.next a::attr(href)').extract_first()
-        if next_url:
-            yield scrapy.Request(response.urljoin(next_url))
+        yield from (scrapy.Request(self.base_url + str(id), callback=self.parse_show) for id in
+                    range(highest_id, 0, -1))
 
     def parse_show(self, response: scrapy.http.Response) -> Generator:
         """Takes in a response from a show page
@@ -108,7 +108,8 @@ class ShowSpider(scrapy.Spider):
                 metadata['native_title'] = list_item.css('li::text')[0].extract().strip()
             if list_item.css('b::text').extract_first() == 'Also Known as:':
                 alts = list_item.css('li::text')[0].extract()
-                metadata['alt_titles'] = [title.strip() for title in alts.split(';') if title.strip()]
+                metadata['alt_titles'] = [title.strip() for title in alts.split(';') if
+                                          title.strip()]
 
         metadata['synopsis'] = ''.join(main_box.css('.show-synopsis ::text').extract())
         # Todo:
