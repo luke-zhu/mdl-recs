@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+import logging
 from typing import Generator
 from urllib.parse import parse_qs
 
@@ -38,6 +39,7 @@ class ShowSpider(scrapy.Spider):
         """
         most_recent_url = response.css('.title a::attr(href)').extract_first()
         highest_id = int(most_recent_url.split('-')[0][1:])
+        self.log('Crawling shows with ids from 1 to {}'.format(highest_id), level=logging.INFO)
 
         yield from (scrapy.Request(self.base_url + str(id), callback=self.parse_show) for id in
                     range(highest_id, 0, -1))
@@ -48,10 +50,11 @@ class ShowSpider(scrapy.Spider):
         and yields the metadata, reviews, and recs from
         the
         """
+        show_id = response.url[24:].split('-')[0]
+        self.log('Parsing show {} from {}'.format(show_id, response.url), level=logging.INFO)
         yield from self.parse_metadata(response)
         yield scrapy.Request(response.url + '/reviews', callback=self.parse_reviews)
         yield scrapy.Request(response.url + '/recs', callback=self.parse_recommendations)
-        show_id = response.url[24:].split('-')[0]
         yield scrapy.Request(self.comments_endpoint + show_id + '&page=1',
                              callback=self.parse_comments)
 
