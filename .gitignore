@@ -141,4 +141,3 @@ venv.bak/
 .vscode
 data
 logs
-webapp/node_modules/
