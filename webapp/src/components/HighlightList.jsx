@@ -1,24 +1,30 @@
-import {List, ListItem} from 'material-ui/List';
+import List, {ListItem} from 'material-ui/List';
+import Divider from 'material-ui/Divider';
 import React from 'react';
 import {connect} from 'react-redux';
 
 const styles = {
-  marginLeft: 24,
+  margin: 20,
 };
 
 class HighlightList extends React.Component {
   render() {
-    // TODO: 3 review/comment snippets
     if (this.props.selectedShow) {
+      console.log(this.props.selectedShow);
       const title = this.props.selectedShow._source.main_title;
+      let highlights = [];
+      if (this.props.selectedShow._source.highlights) {
+        highlights = this.props.selectedShow._source.highlights;
+      }
+      const listItems = highlights.slice(0, 3).map((e, i) => {
+        return <div><ListItem key={i}>{e}</ListItem><Divider/></div>;
+      });
       return (
           <div style={styles}>
             <h2>{title}</h2>
-            <h3>What Others are Saying</h3>
+            <h3>Review Snippets</h3>
             <List>
-              <ListItem>This show sucks.</ListItem>
-              <ListItem>Bob is cool.</ListItem>
-              <ListItem>Don't watch this.</ListItem>
+              {listItems}
             </List>
           </div>
       );

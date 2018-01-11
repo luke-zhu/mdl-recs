@@ -1,5 +1,8 @@
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
+import Grid from 'material-ui/Grid';
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
 
 import MDLInputView from './components/MDLInputView.jsx';
 import ShowList from './components/ShowList.jsx';
@@ -9,19 +12,22 @@ class App extends React.Component {
   render() {
     return (
         <div>
-          <AppBar
-              title={'MDL Recs'}
-              showMenuIconButton={false}
-          />
-          <div style={{display: 'flex', alignContent: 'stretch'}}>
-            <div>
+          <AppBar position={'static'}>
+            <Toolbar>
+              <Typography type={'title'} color={'inherit'}>
+                MDL Recs
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Grid container>
+            <Grid item xs={12} md={3}>
               <MDLInputView/>
               <ShowList/>
-            </div>
-            <div style={{minWidth: '100%', backgroundColor: '#E0F7FA'}}>
+            </Grid>
+            <Grid item xs={12} md={9}>
               <HighlightList/>
-            </div>
-          </div>
+            </Grid>
+          </Grid>
         </div>
     );
   }

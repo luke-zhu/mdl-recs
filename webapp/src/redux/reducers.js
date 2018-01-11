@@ -28,9 +28,9 @@ const reducers = (state = initialState, action) => {
         selectedShow: action.hits[0],
       });
     case SELECT_SHOW:
-      // TODO
+      console.log(state.shows[action.index]);
       return Object.assign({}, state, {
-        selectedShow: {},
+        selectedShow: state.shows[action.index],
       });
     default:
       return state;

@@ -15,7 +15,7 @@ const style = {
 const MDLInputView = ({handleKeyPress}) => (
     <div style={style}>
       <TextField
-          floatingLabelText="Search for a show."
+          label="Search for a show."
           onKeyPress={handleKeyPress}
       />
     </div>

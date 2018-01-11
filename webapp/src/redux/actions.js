@@ -24,11 +24,8 @@ export function displayFailureIcon() {
 export function searchForShow(title) {
   return (dispatch) => {
     // TODO: Get a static IP for the Elasticsearch VM
-    fetch('http://35.227.63.208:9200', {method: 'OPTIONS'}).then((response) => {
-      const url = `http://35.227.63.208:9200/
-      show/_search?q=main_title:${title}`;
-      return fetch(url);
-    }).then((response) => {
+    const url = `https://us-central1-mydramalist-elasticsearch.cloudfunctions.net/function-1?q=main_title:${title}`;
+    fetch(url).then((response) => {
       return response.json();
     }).then((json) => {
       console.log(json);
@@ -54,21 +51,9 @@ export const SELECT_SHOW = 'SELECT_SHOW';
 /*
  * Marks the show with the title as the foreground show.
  */
-export function selectShow(title) {
+export function selectShow(index) {
   return {
     type: SELECT_SHOW,
-    title,
+    index,
   };
-}
-
-export function loadHighlights(title) {
-  return (dispatch) => {
-    fetch('http://35.227.63.208:9200', {method: 'OPTIONS'}).then((response) => {
-      const url = `http://35.227.63.208:9200/
-      show/_search?q=main_title:${title}`;
-      return fetch(url);
-    }).then((response) => {
-      return response.json();
-    })
-  }
 }

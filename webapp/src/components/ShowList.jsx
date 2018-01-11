@@ -1,26 +1,28 @@
-import {List, ListItem} from 'material-ui/List';
+import List, {ListItem, ListItemText} from 'material-ui/List';
 import React from 'react';
 import {connect} from 'react-redux';
 
-const styles = {
-  marginBottom: 24,
-  marginRight: 24,
-};
+import {selectShow} from '../redux/actions';
 
 class ShowList extends React.Component {
   render() {
-    const showViews = this.props.shows.slice(0, 5).map((e) => {
+    const showViews = this.props.shows.slice(0, 5).map((e, i) => {
       const year = e._source.release_date.slice(0, 4);
       return (
           <ListItem
+              button
               key={e._source.id}
-              primaryText={e._source.main_title}
-              secondaryText={year}
-          />
+              onClick={() => this.props.selectShow(i)}
+          >
+            <ListItemText
+                primary={e._source.main_title}
+                secondary={year}
+            />
+          </ListItem>
       );
     });
     return (
-        <div style={styles}>
+        <div>
           <List>
             {showViews}
           </List>
@@ -35,4 +37,12 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(ShowList);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    selectShow(index) {
+      return dispatch(selectShow(index));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShowList);
