@@ -11,5 +11,5 @@ const request = require('request');
 exports.handleRequest = (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
   res.set('Access-Control-Allow-Methods', 'GET');
-  request('http://35.196.227.212:9200/show/_search' + req.url).pipe(res);
+  request('http://10.142.0.2:9200/show/_search' + req.url).pipe(res);
 };

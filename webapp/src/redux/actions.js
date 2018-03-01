@@ -23,8 +23,10 @@ export function displayFailureIcon() {
  */
 export function searchForShow(title) {
   return (dispatch) => {
-    // TODO: Get a static IP for the Elasticsearch VM
-    const url = `https://us-central1-mydramalist-elasticsearch.cloudfunctions.net/function-1?q=main_title:${title}`;
+    const url = (
+        `https://us-central1-mdl-recs.cloudfunctions.net/` +
+        `elasticsearch-caller?q=main_title:${title}`
+    );
     fetch(url).then((response) => {
       return response.json();
     }).then((json) => {
