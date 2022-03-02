@@ -33,7 +33,7 @@ pytz==2017.3
 queuelib==1.4.2
 regex==2017.11.9
 ruamel.yaml==0.15.34
-Scrapy==1.4.0
+Scrapy==1.8.2
 service-identity==17.0.0
 simplegeneric==0.8.1
 six==1.11.0
